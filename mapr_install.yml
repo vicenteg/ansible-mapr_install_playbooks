@@ -1,0 +1,4 @@
+
+- hosts: cluster
+  roles:
+    - mapr_redhat_prereqs

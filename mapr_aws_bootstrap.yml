@@ -7,5 +7,5 @@
 
 - hosts: localhost
   roles:
-    - ansible-mapr_aws_bootstrap
+    - mapr_aws_bootstrap
 

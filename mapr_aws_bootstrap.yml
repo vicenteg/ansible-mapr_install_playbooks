@@ -1,0 +1,44 @@
+- hosts: localhost
+  tasks:
+    - assert:
+        that:
+          - ansible_env.AWS_ACCESS_KEY is defined
+          - ansible_env.AWS_SECRET_KEY is defined
+
+- hosts: localhost
+  roles:
+    - { role: mapr-aws-bootstrap,
+        mapr_edition: 'enterprise',
+        ec2_keypair: 'vgonzalez_keypair',
+        ec2_security_group: 'sg-b7e12fde',
+        ec2_region: 'us-east-1',
+        ec2_zone: 'us-east-1a', # use with subnet-8f999ba7
+        # RHEL 6.5
+        #ec2_image: 'ami-5b697332',
+        # CentOS 6.5
+        ec2_image: 'ami-bc8131d4',
+        # Amazon Linux
+        #ec2_image: 'ami-76817c1e',
+        vpc_subnet: 'subnet-8f999ba7',
+        ec2_name_tag: '{{mapr_cluster_name}}',
+        edge_node_count: 1,
+        edge_node_type: 'm1.medium',
+        edge_node_price: 0.15,
+        cluster_node_count: 6, # 3, 6 or more.
+        cluster_node_type: 'm1.xlarge',
+        cluster_node_price: 0.30,
+        ec2_wait_timeout: 1200,
+        root_device_path: '/dev/sda',
+        ssh_user: 'root'
+    }
+
+# NB: instances is dynamically created in the bootstrap play above.
+# don't look for it in the inventory file.
+- hosts: instances
+  user: '{{ssh_user}}'
+  sudo: yes
+  vars:
+    root_fs: '/dev/sda1'
+  tasks:
+    - name: extend root FS to fill volume in case it's larger than the base AMI
+      command: resize2fs {{root_fs}}

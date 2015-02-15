@@ -18,6 +18,11 @@
   roles:
     - mapr_resourcemanager
 
+- hosts: historyserver
+  max_fail_percentage: 0
+  roles:
+    - mapr_historyserver
+
 - hosts: nodemanager
   max_fail_percentage: 0
   roles:

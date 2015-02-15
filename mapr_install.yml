@@ -33,3 +33,7 @@
   roles:
     - mapr_jobtracker
 
+- hosts: tasktracker
+  roles:
+    - mapr-tasktracker
+

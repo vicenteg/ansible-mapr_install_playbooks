@@ -28,3 +28,7 @@
   roles:
     - mapr_nodemanager
 
+- hosts: jobtracker
+  max_fail_percentage: 0
+  roles:
+    - mapr_jobtracker

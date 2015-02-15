@@ -45,3 +45,7 @@
 - hosts: cluster
   roles:
     - mapr_nfs
+
+- hosts: all
+  roles:
+    - mapr_configuration

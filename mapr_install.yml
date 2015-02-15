@@ -2,3 +2,8 @@
 - hosts: cluster
   roles:
     - mapr_redhat_prereqs
+
+- hosts: zookeepers
+  max_fail_percentage: 0
+  roles:
+    - mapr_zookeeper

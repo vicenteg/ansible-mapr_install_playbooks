@@ -12,3 +12,8 @@
   max_fail_percentage: 0
   roles:
     - mapr_cldb
+
+- hosts: resourcemanager
+  max_fail_percentage: 0
+  roles:
+    - mapr_resourcemanager

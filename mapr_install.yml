@@ -7,3 +7,8 @@
   max_fail_percentage: 0
   roles:
     - mapr_zookeeper
+
+- hosts: cldb
+  max_fail_percentage: 0
+  roles:
+    - mapr_cldb

@@ -17,3 +17,9 @@
   max_fail_percentage: 0
   roles:
     - mapr_resourcemanager
+
+- hosts: nodemanager
+  max_fail_percentage: 0
+  roles:
+    - mapr_nodemanager
+

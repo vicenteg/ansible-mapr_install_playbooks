@@ -37,3 +37,7 @@
   roles:
     - mapr_tasktracker
 
+- hosts: webserver
+  roles:
+    - mapr_webserver
+

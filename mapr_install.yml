@@ -41,3 +41,6 @@
   roles:
     - mapr_webserver
 
+- hosts: cluster
+  roles:
+    - mapr_nfs

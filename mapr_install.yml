@@ -1,5 +1,6 @@
 
 - hosts: cluster
+  max_fail_percentage: 0
   roles:
     - mapr_redhat_prereqs
 

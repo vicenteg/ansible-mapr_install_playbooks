@@ -35,5 +35,5 @@
 
 - hosts: tasktracker
   roles:
-    - mapr-tasktracker
+    - mapr_tasktracker
 

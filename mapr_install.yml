@@ -55,6 +55,10 @@
   roles:
     - mapr_client
 
+- hosts: hiveserver
+  roles:
+    - mysql_server
+
 - hosts: all
   roles:
     - mapr_configuration

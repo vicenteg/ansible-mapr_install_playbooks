@@ -70,3 +70,8 @@
 - hosts: cldb
   roles:
     - mapr_cldb_startup
+
+- hosts: cluster
+  roles:
+    - mapr_cluster_startup
+

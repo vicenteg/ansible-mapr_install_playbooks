@@ -66,3 +66,7 @@
 - hosts: zookeepers
   roles:
     - mapr_zookeeper_startup
+
+- hosts: cldb
+  roles:
+    - mapr_cldb_startup

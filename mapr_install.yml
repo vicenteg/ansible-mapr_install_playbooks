@@ -46,6 +46,10 @@
   roles:
     - mapr_nfs
 
+- hosts: edge
+  roles:
+    - mapr_client
+
 - hosts: all
   roles:
     - mapr_configuration

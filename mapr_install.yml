@@ -3,6 +3,7 @@
   max_fail_percentage: 0
   roles:
     - mapr_redhat_prereqs
+    - python_lxml
 
 - hosts: zookeepers
   max_fail_percentage: 0

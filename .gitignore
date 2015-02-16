@@ -1,3 +1,5 @@
+library/
 roles/
 cluster.hosts*
 hosts_entry
+

@@ -63,6 +63,6 @@
   roles:
     - mapr_configuration
 
-- hosts: zookeeper
+- hosts: zookeepers
   roles:
     - mapr_zookeeper_startup

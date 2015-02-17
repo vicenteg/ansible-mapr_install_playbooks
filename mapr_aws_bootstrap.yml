@@ -6,6 +6,8 @@
           - ansible_env.AWS_SECRET_KEY is defined
 
 - hosts: localhost
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_aws_bootstrap
 

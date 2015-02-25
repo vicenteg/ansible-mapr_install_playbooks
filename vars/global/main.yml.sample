@@ -1,0 +1,37 @@
+# select which mapreduce mode to install
+classic_enabled: False
+yarn_enabled:  True
+
+# Set the cluster name 
+mapr_cluster_name: my.cluster.com
+
+# ec2 settings
+# be sure to look these over carefully,
+# particularly security groups and keypair
+#
+# ec2 keypair
+ec2_keypair: my_ec2_keypair_name
+ec2_security_group:
+  - security_group_1
+  - security_group_2
+  - security_group_3
+ec2_zone: us-east-1b
+vpc_subnet: subnet-deadbeef
+ec2_image: ami-0000babe
+
+cluster_node_type: m3.xlarge
+
+# Be sure you know how your disk devices
+# will appear to the OS. This varies widely
+# depending on your AMI.
+# You may also need to unmount any ephemeral
+# disks that are automatically mounted.
+mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
+
+# A proxy is of course not required, but if
+# you need one, here's how you configure it.
+# Note that you might need to set up
+# yum.conf as well.
+proxy_env:
+  http_proxy: http://172.16.1.58:3128
+  https_proxy: http://172.16.1.58:3128

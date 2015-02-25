@@ -1,18 +1,26 @@
-# if using the aws bootstrap playbook, 
-# configure the aws credentials here.
+# if using the aws bootstrap playbook, to start
+# ec2 instances, configure your aws credentials here.
 #aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
 #aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
 
-# select which mapreduce mode to install
+# select which mapreduce mode to install.
+# You can install either, both, or neither.
+# set to False if you do not want the framework 
+# installed.
 classic_enabled: False
 yarn_enabled:  True
 
-# Set the cluster name 
+# Set the cluster name. 
 mapr_cluster_name: my.cluster.com
 
-# ec2 settings
+# --- ec2 settings ---
 # be sure to look these over carefully,
-# particularly security groups and keypair
+# particularly security groups and keypair.
+# Supported OSes are Redhat based: RHEL/CentOS 6+ and
+# Amazon Linux. Debian derived is not supported.
+#
+# Not tested outside a VPC, so please be sure we have
+# to have on set up.
 #
 # ec2 keypair
 ec2_keypair: my_ec2_keypair_name
@@ -23,20 +31,22 @@ ec2_security_group:
 ec2_zone: us-east-1b
 vpc_subnet: subnet-deadbeef
 ec2_image: ami-0000babe
-
 cluster_node_type: m3.xlarge
 
 # Be sure you know how your disk devices
 # will appear to the OS. This varies widely
 # depending on your AMI.
+#
 # You may also need to unmount any ephemeral
 # disks that are automatically mounted.
+#
 mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
 
 # A proxy is of course not required, but if
 # you need one, here's how you configure it.
 # Note that you might need to set up
 # yum.conf as well.
+#
 proxy_env:
   http_proxy: http://172.16.1.58:3128
   https_proxy: http://172.16.1.58:3128

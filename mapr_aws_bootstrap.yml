@@ -1,13 +1,11 @@
 - hosts: localhost
+  vars_files:
+    - vars/global/main.yml
   tasks:
     - assert:
         that:
-          - ansible_env.AWS_ACCESS_KEY is defined
-          - ansible_env.AWS_SECRET_KEY is defined
-
-- hosts: localhost
-  vars_files:
-    - vars/global/main.yml
+          - aws_access_key is defined
+          - aws_secret_key is defined
   roles:
     - mapr_aws_bootstrap
 

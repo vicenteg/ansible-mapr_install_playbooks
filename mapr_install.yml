@@ -4,6 +4,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
+    - mapr_accounts
     - mapr_redhat_prereqs
     - python_lxml
 
@@ -108,6 +109,12 @@
     - vars/global/main.yml
   roles:
     - mapr_cluster_startup
+
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_license, when: license_file is defined }
 
 - hosts: spark_master
   vars_files:

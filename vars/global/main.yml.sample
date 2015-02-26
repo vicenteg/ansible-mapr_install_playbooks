@@ -15,6 +15,10 @@ mirror_host: package.mapr.com
 classic_enabled: False
 yarn_enabled:  True
 
+# select ecosystem things to install.
+spark_enabled: True
+scala_version: 2.10.3
+
 # Set the cluster name. 
 mapr_cluster_name: my.cluster.com
 

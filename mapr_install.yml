@@ -1,77 +1,122 @@
 
 - hosts: all
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_redhat_prereqs
     - python_lxml
 
 - hosts: zookeepers
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_zookeeper
 
 - hosts: cldb
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_cldb
 
 - hosts: resourcemanager
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
-    - mapr_resourcemanager
+    - { role: mapr_resourcemanager, when: yarn_enabled == True }
 
 - hosts: historyserver
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
-    - mapr_historyserver
+    - { role: mapr_historyserver, when: yarn_enabled == True }
 
 - hosts: nodemanager
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
-    - mapr_nodemanager
+    - { role: mapr_nodemanager, when: yarn_enabled == True }
 
 - hosts: jobtracker
   max_fail_percentage: 0
+  vars_files:
+    - vars/global/main.yml
   roles:
-    - mapr_jobtracker
+    - { role: mapr_jobtracker, when: classic_enabled == True }
 
 - hosts: tasktracker
+  vars_files:
+    - vars/global/main.yml
   roles:
-    - mapr_tasktracker
+    - { role: mapr_tasktracker, when: classic_enabled == True }
 
 - hosts: webserver
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_webserver
 
 - hosts: cluster
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_nfs
 
 - hosts: fileserver
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_fileserver
 
 - hosts: edge
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_client
 
 - hosts: hiveserver
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mysql_server
 
 - hosts: all
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_configuration
 
 - hosts: zookeepers
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_zookeeper_startup
 
 - hosts: cldb
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_cldb_startup
 
 - hosts: cluster
+  vars_files:
+    - vars/global/main.yml
   roles:
     - mapr_cluster_startup
 
+- hosts: spark_master
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_spark_master, when: spark_enabled == True }
+
+- hosts: spark_slave
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_spark_slave, when: spark_enabled == True }

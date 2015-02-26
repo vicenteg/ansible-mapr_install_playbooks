@@ -3,6 +3,11 @@
 #aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
 #aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
 
+# set the mirror host. If you're installing from the
+# public MapR repos, the following default is what
+# you want.
+mirror_host: package.mapr.com
+
 # select which mapreduce mode to install.
 # You can install either, both, or neither.
 # set to False if you do not want the framework 

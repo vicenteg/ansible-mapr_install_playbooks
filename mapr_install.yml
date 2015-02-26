@@ -113,10 +113,12 @@
   vars_files:
     - vars/global/main.yml
   roles:
+    - { role: scala, when: spark_enabled == True }
     - { role: mapr_spark_master, when: spark_enabled == True }
 
 - hosts: spark_slave
   vars_files:
     - vars/global/main.yml
   roles:
+    - { role: scala, when: spark_enabled == True }
     - { role: mapr_spark_slave, when: spark_enabled == True }

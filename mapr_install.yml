@@ -56,6 +56,12 @@
   roles:
     - { role: mapr_tasktracker, when: classic_enabled == True }
 
+- hosts: hiveserver
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_hive, when: classic_enabled or yarn_enabled }
+
 - hosts: webserver
   vars_files:
     - vars/global/main.yml

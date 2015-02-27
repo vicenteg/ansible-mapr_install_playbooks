@@ -135,3 +135,10 @@
   roles:
     - { role: scala, when: spark_enabled == True }
     - { role: mapr_spark_slave, when: spark_enabled == True }
+
+- hosts: edge;cluster
+  sudo_user: mapr
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - mapr_post_install_test

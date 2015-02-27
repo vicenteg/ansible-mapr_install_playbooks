@@ -60,6 +60,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
+    - { role: mysql_server }
     - { role: mapr_hive, when: classic_enabled or yarn_enabled }
 
 - hosts: webserver
@@ -85,12 +86,6 @@
     - vars/global/main.yml
   roles:
     - mapr_client
-
-- hosts: hiveserver
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - mysql_server
 
 - hosts: all
   vars_files:

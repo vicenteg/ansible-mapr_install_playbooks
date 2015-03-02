@@ -15,20 +15,37 @@ mirror_host: package.mapr.com
 classic_enabled: False
 yarn_enabled:  True
 
+
 # select ecosystem things to install.
+# for Spark, also specify scala version
+#
 spark_enabled: True
 scala_version: 2.10.3
+
+# opentsdb! This also installs tcollector, with a 
+# mapr_metrics script
+#
+opentsdb_enabled: True
+
+# Solr
+# Ensure you add a solr group to the inventory.
+solr_enabled: True
 
 # Set the cluster name. 
 mapr_cluster_name: my.cluster.com
 
 # Set the mapr user account information here.
+#
 mapr_user: mapr
 mapr_group: mapr
 mapr_home: /home/mapr
 
 # Password generated with openssl passwd -1
 mapr_user_pw: '$1$yoPLWBQ6$6fvQchDTBu3Ccs3PVURpA.'
+
+# Set the uid/gid for the mapr user. These are good
+# defaults.
+#
 mapr_uid: 2147483632
 mapr_gid: 2147483632
 
@@ -41,15 +58,14 @@ mapr_gid: 2147483632
 # will appear to the OS. This varies widely
 # depending on your OS/AMI choice.
 #
-# You may also need to unmount any ephemeral
-# disks that are automatically mounted.
+# You may also need to unmount any would-be mapr
+# disks that are automatically mounted. This
+# is often the case with ephemeral disks on ec2.
 #
 mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
 
-# A proxy is of course not required, but if
+# A proxy is not required, but if
 # you need one, here's how you configure it.
-# Note that you might need to set up
-# yum.conf as well.
 #
 proxy_env:
   http_proxy: http://172.16.1.58:3128
@@ -74,4 +90,11 @@ ec2_zone: us-east-1b
 vpc_subnet: subnet-deadbeef
 ec2_image: ami-0000babe
 cluster_node_type: m3.xlarge
+edge_node_type: m3.medium
+
+# if the price is set, spot instances
+# will be requested. Comment it out for
+# on demand instances.
+cluster_node_price: 0.25
+edge_node_price: 0.25
 

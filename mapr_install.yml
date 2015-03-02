@@ -150,6 +150,12 @@
     - { role: scala, when: spark_enabled == True }
     - { role: mapr_spark_slave, when: spark_enabled == True }
 
+- hosts: solr
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: solr, when: solr_enabled == True }
+
 - hosts: edge;cluster
   sudo_user: mapr
   vars_files:

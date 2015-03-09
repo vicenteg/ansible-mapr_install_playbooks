@@ -81,12 +81,6 @@
   roles:
     - mapr_client
 
-- hosts: webserver
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_metrics, when: mapr_metrics_enabled == True }
-
 - hosts: all
   vars_files:
     - vars/global/main.yml
@@ -124,7 +118,26 @@
     - { role: mysql_server }
     - { role: mapr_hive, when: classic_enabled or yarn_enabled }
 
+- hosts: webserver
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_metrics_database, when: mapr_metrics_enabled == True }
+    - { role: mapr_metrics, when: mapr_metrics_enabled == True }
+
 - hosts: hbasemaster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_hbasemaster, when: hbase_enabled == True }
+
+- hosts: regionserver
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_hbaseregionserver, when: hbase_enabled == True }
+
+- hosts: opentsdb
   vars_files:
     - vars/global/main.yml
   roles:

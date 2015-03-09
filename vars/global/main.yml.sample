@@ -32,7 +32,7 @@ opentsdb_enabled: True
 solr_enabled: True
 
 # Set the cluster name. 
-mapr_cluster_name: my.cluster.com
+cluster_name: my.cluster.com
 
 # Set the mapr user account information here.
 #

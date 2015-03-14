@@ -125,6 +125,12 @@
     - { role: mapr_metrics_database, when: mapr_metrics_enabled == True }
     - { role: mapr_metrics, when: mapr_metrics_enabled == True }
 
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_drill, when: drill_enabled == True }
+
 - hosts: hbasemaster
   vars_files:
     - vars/global/main.yml

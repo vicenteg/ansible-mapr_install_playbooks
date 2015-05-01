@@ -1,0 +1,80 @@
+# This is the hosts file for Vagrant.
+# Edit the IP addresses, but do not edit the names.
+node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
+
+# Do not edit below this line unless you're pretty sure.
+
+# N.B. - must set ansible_python_interpreter=python so that we do not default to /usr/bin/python
+# this allows the playbook to work with virtualenv
+local ansible_connection=local ansible_python_interpreter=python
+localhost ansible_connection=local ansible_python_interpreter=python
+
+[cluster]
+node1
+
+[jobtracker]
+node1
+
+[tasktracker]
+node1
+
+[resourcemanager]
+node1
+
+[nodemanager]
+node1
+
+[historyserver]
+node1
+
+[webserver]
+node1
+
+[zookeepers]
+node1
+
+[cldb]
+node1
+
+[nfs]
+node1
+
+[fileserver]
+node1
+
+[mysql]
+node1
+
+[edge]
+
+[impalaserver]
+node1
+
+[impalastore]
+node1
+
+[impalacatalog]
+
+[hue]
+node1
+
+[hiveserver]
+node1
+
+[spark_master]
+node1
+
+[spark_slave]
+node1
+
+[opentsdb]
+node1
+
+[hbasemaster]
+node1
+
+[regionserver]
+node1
+
+[solr]
+node1

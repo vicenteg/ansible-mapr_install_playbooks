@@ -99,6 +99,22 @@
   roles:
     - mapr_cldb_startup
 
+- hosts: cldb[0]
+  sudo: yes
+  sudo_user: mapr
+  tasks:
+    - name: set default desired replication to 1
+      command: maprcli config save -values "{cldb.volumes.default.replication:1}"
+      when: groups['cluster'] | length == 1
+
+    - name: set default min replication to 1
+      command: maprcli config save -values "{cldb.volumes.default.min.replication:1}"
+      when: groups['cluster'] | length == 1
+
+    - name: set replication to 1 if single node
+      shell: maprcli volume list -columns volumename | grep -v volumename | awk '{print $1}' | xargs -n1 -I'{}' maprcli volume modify -name '{}' -replication 1 -minreplication 1
+      when: groups['cluster'] | length == 1
+
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
@@ -180,4 +196,4 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_post_install_test
+    - { role: mapr_post_install_test, when: skip_tests == False }

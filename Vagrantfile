@@ -3,7 +3,7 @@ username = Etc.getlogin
 
 Vagrant.configure("2") do |config|
   disk_size = 24 * 1024
-  memory = (8 * 1024).round
+  memory = (7 * 1024).round
   config.vm.define "node1" do |node1|
   
     node1.vm.box = "ecnivny/centos-6.5"
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
       disk_path = "/Users/%s/Virtualbox VMs/%s" % [ username, provider.name ]
       disk_filenames = (1..6).map{|n| "mapr_disk%s.vdi" % n }
 
-      provider.cpus = 3
+      provider.cpus = 2
       provider.customize ["modifyvm", :id, "--memory", memory]
       disk_filenames.each_with_index do |disk_file, index|
         port = index+1

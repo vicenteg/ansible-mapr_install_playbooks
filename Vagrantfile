@@ -3,14 +3,12 @@ username = Etc.getlogin
 
 Vagrant.configure("2") do |config|
   disk_size = 24 * 1024
-  memory = (7 * 1024).round
+  memory = (8 * 1024).round
   config.vm.define "node1" do |node1|
   
     node1.vm.box = "ecnivny/centos-6.5"
     
     node1.vm.hostname = "node1"
-    node1.vm.network :forwarded_port, guest: 111, host: 111
-    node1.vm.network :forwarded_port, guest: 2049, host: 2049
     node1.vm.network :forwarded_port, guest: 8443, host: 8443
     node1.vm.network :forwarded_port, guest: 8000, host: 8000
     node1.vm.network :forwarded_port, guest: 8088, host: 8088

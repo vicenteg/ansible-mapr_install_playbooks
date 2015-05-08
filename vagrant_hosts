@@ -6,8 +6,8 @@ node1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222 ansible_ssh_user=vagrant 
 
 # N.B. - must set ansible_python_interpreter=python so that we do not default to /usr/bin/python
 # this allows the playbook to work with virtualenv
-local ansible_connection=local ansible_python_interpreter=python
-localhost ansible_connection=local ansible_python_interpreter=python
+local ansible_connection=local # ansible_python_interpreter=python
+localhost ansible_connection=local # ansible_python_interpreter=python
 
 [cluster]
 node1

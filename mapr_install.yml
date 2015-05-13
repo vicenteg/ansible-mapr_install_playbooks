@@ -28,34 +28,34 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_resourcemanager, when: yarn_enabled == True }
+    - { role: mapr_resourcemanager, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: historyserver
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_historyserver, when: yarn_enabled == True }
+    - { role: mapr_historyserver, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: nodemanager
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_nodemanager, when: yarn_enabled == True }
+    - { role: mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: jobtracker
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_jobtracker, when: classic_enabled == True }
+    - { role: mapr_jobtracker, when: classic_enabled is defined and classic_enabled == True }
 
 - hosts: tasktracker
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_tasktracker, when: classic_enabled == True }
+    - { role: mapr_tasktracker, when: classic_enabled is defined and classic_enabled == True }
 
 - hosts: webserver
   vars_files:
@@ -99,6 +99,22 @@
   roles:
     - mapr_cldb_startup
 
+- hosts: cldb[0]
+  sudo: yes
+  sudo_user: mapr
+  tasks:
+    - name: set default desired replication to 1
+      command: maprcli config save -values "{cldb.volumes.default.replication:1}"
+      when: groups['cluster'] | length == 1
+
+    - name: set default min replication to 1
+      command: maprcli config save -values "{cldb.volumes.default.min.replication:1}"
+      when: groups['cluster'] | length == 1
+
+    - name: set replication to 1 if single node
+      shell: maprcli volume list -columns volumename | grep -v volumename | awk '{print $1}' | xargs -n1 -I'{}' maprcli volume modify -name '{}' -replication 1 -minreplication 1
+      when: groups['cluster'] | length == 1
+
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
@@ -122,62 +138,62 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_metrics_database, when: mapr_metrics_enabled == True }
-    - { role: mapr_metrics, when: mapr_metrics_enabled == True }
+    - { role: mapr_metrics_database, when: mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
+    - { role: mapr_metrics, when: mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_drill, when: drill_enabled == True }
+    - { role: mapr_drill, when: drill_enabled is defined and drill_enabled == True }
 
 - hosts: hbasemaster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hbasemaster, when: hbase_enabled == True }
+    - { role: mapr_hbasemaster, when: hbase_enabled is defined and hbase_enabled == True }
 
 - hosts: regionserver
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hbaseregionserver, when: hbase_enabled == True }
+    - { role: mapr_hbaseregionserver, when: hbase_enabled is defined and hbase_enabled == True }
 
 - hosts: opentsdb
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_opentsdb, when: opentsdb_enabled == True }
+    - { role: mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_tcollector, when: opentsdb_enabled == True }
+    - { role: mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: spark_master
   vars_files:
     - vars/global/main.yml
   roles:
     - { role: scala, when: spark_enabled == True }
-    - { role: mapr_spark_master, when: spark_enabled == True }
+    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled == True }
 
 - hosts: spark_slave
   vars_files:
     - vars/global/main.yml
   roles:
     - { role: scala, when: spark_enabled == True }
-    - { role: mapr_spark_slave, when: spark_enabled == True }
+    - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled == True }
 
 - hosts: solr
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: solr, when: solr_enabled == True }
+    - { role: solr, when: solr_enabled is defined and solr_enabled == True }
 
 - hosts: edge;cluster
   sudo_user: mapr
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_post_install_test
+    - { role: mapr_post_install_test, when: skip_tests is defined and skip_tests == False }

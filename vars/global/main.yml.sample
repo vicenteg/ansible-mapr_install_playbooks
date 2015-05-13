@@ -8,6 +8,9 @@
 # you want.
 mirror_host: package.mapr.com
 
+# probably a good idea to not skip the tests.
+skip_tests: False
+
 # select which mapreduce mode to install.
 # You can install either, both, or neither.
 # set to False if you do not want the framework 
@@ -15,21 +18,26 @@ mirror_host: package.mapr.com
 classic_enabled: False
 yarn_enabled:  True
 
-
 # select ecosystem things to install.
 # for Spark, also specify scala version
 #
-spark_enabled: True
+spark_enabled: False
 scala_version: 2.10.3
 
 # opentsdb! This also installs tcollector, with a 
 # mapr_metrics script
 #
-opentsdb_enabled: True
+opentsdb_enabled: False
+
+# Apache HBase
+hbase_enabled: False
+ 
+# Apache Drill
+drill_enabled: False
 
 # Solr
 # Ensure you add a solr group to the inventory.
-solr_enabled: True
+solr_enabled: False
 
 # Set the cluster name. 
 cluster_name: my.cluster.com
@@ -67,9 +75,9 @@ mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
 # A proxy is not required, but if
 # you need one, here's how you configure it.
 #
-proxy_env:
-  http_proxy: http://172.16.1.58:3128
-  https_proxy: http://172.16.1.58:3128
+#proxy_env:
+#  http_proxy: http://172.16.1.58:3128
+#  https_proxy: http://172.16.1.58:3128
 
 # --- ec2 settings - if using aws_bootstrap ---
 # be sure to look these over carefully,

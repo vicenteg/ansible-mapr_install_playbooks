@@ -1,7 +1,6 @@
 - hosts: localhost
   vars_files:
     - vars/global/main.yml
-    - vars/hosts/{{ansible_hostname}}.yml
   tasks:
     - assert:
         that:

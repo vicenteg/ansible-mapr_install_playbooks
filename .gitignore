@@ -5,3 +5,4 @@ cluster.hosts*
 hosts_entry
 vars/global/main.yml
 test_results/
+inventory.py

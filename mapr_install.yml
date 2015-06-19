@@ -131,15 +131,14 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mysql_server }
     - { role: mapr_hive, when: classic_enabled or yarn_enabled }
 
 - hosts: webserver
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_metrics_database, when: mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
-    - { role: mapr_metrics, when: mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
+    - { role: mapr_metrics_database, when: classic_enabled and mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
+    - { role: mapr_metrics, when: classic_enabled and mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
 
 - hosts: cluster
   vars_files:

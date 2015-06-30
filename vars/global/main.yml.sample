@@ -1,108 +1,59 @@
-# if using the aws bootstrap playbook, to start
-# ec2 instances, configure your aws credentials here.
-#aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
-#aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
+mapr_version: v4.1.0
+aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
+aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
+license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestM7License.txt
+# secure_cluster: "True"
 
-# set the mirror host. If you're installing from the
-# public MapR repos, the following default is what
-# you want.
-mirror_host: package.mapr.com
+ec2_regions:
+  east-1a:
+    region: us-east-1
+    zone: us-east-1a
+    cluster_node_count: '{{cluster_node_count}}'
+    edge_node_count: '{{edge_node_count}}'
+    edge_node_price: '{{edge_node_price}}'
+    cluster_node_price: '{{cluster_node_price}}'
+    security_group:
+      - vpc-internal
+      - ssh-only
+    vpc_subnet: subnet-8f999ba7
+    image: ami-1ecae776 # Amazon Linux HVM
+    assign_public_ip: false
+#cluster_node_volumes:
+#  - device_name: /dev/xvdf
+#    volume_size: 72
+#    delete_on_termination: true
 
-# probably a good idea to not skip the tests.
-skip_tests: False
-
-# select which mapreduce mode to install.
-# You can install either, both, or neither.
-# set to False if you do not want the framework 
-# installed.
 classic_enabled: False
 yarn_enabled:  True
-
-# select ecosystem things to install.
-# for Spark, also specify scala version
-#
 spark_enabled: False
-scala_version: 2.10.3
-
-# opentsdb! This also installs tcollector, with a 
-# mapr_metrics script
-#
 opentsdb_enabled: False
-
-# Apache HBase
-hbase_enabled: False
- 
-# Apache Drill
-drill_enabled: False
-
-# Solr
-# Ensure you add a solr group to the inventory.
 solr_enabled: False
+hbase_enabled: False
+drill_enabled: True
+impala_enabled: False
 
-# Set the cluster name. 
-cluster_name: my.cluster.com
+tsdb_host: '{{groups["opentsdb"][0]}}'
 
-# Set the mapr user account information here.
+# Set the cluster name 
+cluster_name: vgonzalez.wf-security
+mapr_user_pw: $1$98q6OUnc$2/PJybdtQk5Nk7.SLoAdv1
+mapr_user_pw_clear: mapr
+
+# ec2 settings
+# be sure to look these over carefully,
+# particularly security groups and keypair
 #
-mapr_user: mapr
-mapr_group: mapr
-mapr_home: /home/mapr
+# ec2 keypair
+ec2_keypair: vgonzalez_keypair
+cluster_node_type: m3.xlarge
+cluster_node_price: 
+edge_node_price: 
+edge_node_count: 0
+cluster_node_count: 3
 
-# Password generated with openssl passwd -1
-mapr_user_pw: '$1$yoPLWBQ6$6fvQchDTBu3Ccs3PVURpA.'
-
-# Set the uid/gid for the mapr user. These are good
-# defaults.
-#
-mapr_uid: 2147483632
-mapr_gid: 2147483632
-
-
-# Set the path to a license file. If this is set,
-# the license key will be applied.
-# license_file: /tmp/my-license-key.txt
-
-# Be sure you know how your disk devices
-# will appear to the OS. This varies widely
-# depending on your OS/AMI choice.
-#
-# You may also need to unmount any would-be mapr
-# disks that are automatically mounted. This
-# is often the case with ephemeral disks on ec2.
-#
 mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
 
-# A proxy is not required, but if
-# you need one, here's how you configure it.
-#
+proxy_env: { }
 #proxy_env:
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128
-
-# --- ec2 settings - if using aws_bootstrap ---
-# be sure to look these over carefully,
-# particularly security groups and keypair.
-# Supported OSes are Redhat based: RHEL/CentOS 6+ and
-# Amazon Linux. Debian derived is not supported.
-#
-# Not tested outside a VPC, so please be sure we have
-# to have on set up.
-#
-# ec2 keypair
-ec2_keypair: my_ec2_keypair_name
-ec2_security_group:
-  - security_group_1
-  - security_group_2
-  - security_group_3
-ec2_zone: us-east-1b
-vpc_subnet: subnet-deadbeef
-ec2_image: ami-0000babe
-cluster_node_type: m3.xlarge
-edge_node_type: m3.medium
-
-# if the price is set, spot instances
-# will be requested. Comment it out for
-# on demand instances.
-cluster_node_price: 0.25
-edge_node_price: 0.25
-

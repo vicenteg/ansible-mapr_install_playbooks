@@ -1,7 +1,7 @@
 # if using the aws bootstrap playbook, to start
 # ec2 instances, configure your aws credentials here.
-#aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
-#aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
+#aws_access_key: "ABCDEFGHIJKLMNOPQRSTU"
+#aws_secret_key: "ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
 
 # set the mirror host. If you're installing from the
 # public MapR repos, the following default is what

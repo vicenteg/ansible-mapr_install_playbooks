@@ -159,6 +159,7 @@
     - { role: mapr_hbaseregionserver, when: hbase_enabled is defined and hbase_enabled == True }
 
 - hosts: opentsdb
+  sudo: yes
   vars_files:
     - vars/global/main.yml
   roles:

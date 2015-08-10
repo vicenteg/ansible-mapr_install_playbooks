@@ -5,7 +5,8 @@
     - vars/global/main.yml
   roles:
     - mapr_accounts
-    - mapr_redhat_prereqs
+    - { role: mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
+    - { role: mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
     - mapr_external_packages
     - python_lxml
 
@@ -131,7 +132,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hive, when: classic_enabled or yarn_enabled }
+    - { role: mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
 
 - hosts: webserver
   vars_files:
@@ -157,6 +158,13 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_hbaseregionserver, when: hbase_enabled is defined and hbase_enabled == True }
+
+- hosts: cluster
+  sudo: yes
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: user_account, user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: opentsdb
   sudo: yes

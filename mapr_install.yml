@@ -134,6 +134,30 @@
   roles:
     - { role: mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
 
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_pig, when: classic_enabled or yarn_enabled and pig_enabled is defined and pig_enabled == True }
+
+- hosts: hue
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_httpfs, when: httpfs_enabled is defined and httpfs_enabled == True }
+
+- hosts: oozie
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_oozie, when: classic_enabled or yarn_enabled and oozie_enabled is defined and oozie_enabled == True }
+
+- hosts: hue
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_hue, when: hue_enabled is defined and hue_enabled == True }
+
 - hosts: webserver
   vars_files:
     - vars/global/main.yml

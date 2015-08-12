@@ -7,6 +7,7 @@
     - mapr_accounts
     - { role: mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
     - { role: mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
+    - { role: ntp }
     - mapr_external_packages
     - python_lxml
 
@@ -44,19 +45,6 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True }
-
-- hosts: jobtracker
-  max_fail_percentage: 0
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_jobtracker, when: classic_enabled is defined and classic_enabled == True }
-
-- hosts: tasktracker
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_tasktracker, when: classic_enabled is defined and classic_enabled == True }
 
 - hosts: webserver
   vars_files:
@@ -159,30 +147,11 @@
   roles:
     - { role: mapr_hue, when: hue_enabled is defined and hue_enabled == True }
 
-- hosts: webserver
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_metrics_database, when: classic_enabled and mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
-    - { role: mapr_metrics, when: classic_enabled and mapr_metrics_enabled is defined and mapr_metrics_enabled == True }
-
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
     - { role: mapr_drill, when: drill_enabled is defined and drill_enabled == True }
-
-- hosts: hbasemaster
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_hbasemaster, when: hbase_enabled is defined and hbase_enabled == True }
-
-- hosts: regionserver
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: mapr_hbaseregionserver, when: hbase_enabled is defined and hbase_enabled == True }
 
 - hosts: cluster
   sudo: yes
@@ -203,26 +172,6 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
-
-- hosts: spark_master
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: scala, when: spark_enabled == True }
-    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled == True }
-
-- hosts: spark_slave
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: scala, when: spark_enabled == True }
-    - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled == True }
-
-- hosts: solr
-  vars_files:
-    - vars/global/main.yml
-  roles:
-    - { role: solr, when: solr_enabled is defined and solr_enabled == True }
 
 - hosts: edge;cluster
   sudo_user: mapr

@@ -91,6 +91,10 @@
 - hosts: cldb[0]
   sudo: yes
   sudo_user: mapr
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == "True" }
   tasks:
     - name: set default desired replication to 1
       command: maprcli config save -values "{cldb.volumes.default.replication:1}"

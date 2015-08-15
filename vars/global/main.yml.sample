@@ -1,8 +1,14 @@
-mapr_version: v4.1.0
-aws_access_key="ABCDEFGHIJKLMNOPQRSTU"
-aws_secret_key="ABCDEFGHIJKLMNOPQURSTUVWXYZ01234567"
-license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestM7License.txt
-# secure_cluster: "True"
+mirror_host: package.mapr.com
+mapr_version: v5.0.0
+aws_access_key: ACBDEFGHIJKLMNOP
+aws_secret_key: aBcDeFgHiJkLmNoP
+license_file: /path/to/a/license/file.txt
+secure_cluster: "True"
+
+ntp_config_server:
+  - pool.ntp.org
+  - pool.ntp.org
+  - pool.ntp.org
 
 ec2_regions:
   east-1a:
@@ -16,44 +22,58 @@ ec2_regions:
       - vpc-internal
       - ssh-only
     vpc_subnet: subnet-8f999ba7
+    #image: ami-c2a818aa # CentOS 6 HVM
     image: ami-1ecae776 # Amazon Linux HVM
-    assign_public_ip: false
-#cluster_node_volumes:
-#  - device_name: /dev/xvdf
-#    volume_size: 72
-#    delete_on_termination: true
+    assign_public_ip: no
+cluster_node_volumes:
+  - device_name: /dev/xvdb
+    volume_size: 20
+    delete_on_termination: true
+  - device_name: /dev/xvdf
+    volume_size: 72
+    delete_on_termination: true
 
 classic_enabled: False
+hive_enabled: True
+pig_enabled: True
 yarn_enabled:  True
 spark_enabled: False
-opentsdb_enabled: False
+opentsdb_enabled: True
 solr_enabled: False
 hbase_enabled: False
 drill_enabled: True
 impala_enabled: False
+oozie_enabled: True
+httpfs_enabled: True
+hue_enabled: True
 
 tsdb_host: '{{groups["opentsdb"][0]}}'
 
+# MySQL credentials for hive, hue
+mysql_root_user: root
+mysql_root_password: mapr
+
 # Set the cluster name 
-cluster_name: vgonzalez.wf-security
+cluster_name: ansible
+mapr_admin_username: mapr
 mapr_user_pw: $1$98q6OUnc$2/PJybdtQk5Nk7.SLoAdv1
-mapr_user_pw_clear: mapr
+maprlogin_username: mapr
+maprlogin_pw_clear: mapr
 
 # ec2 settings
 # be sure to look these over carefully,
 # particularly security groups and keypair
 #
 # ec2 keypair
-ec2_keypair: vgonzalez_keypair
-cluster_node_type: m3.xlarge
+ec2_keypair: my_keypair
+cluster_node_type: m4.xlarge
 cluster_node_price: 
 edge_node_price: 
 edge_node_count: 0
 cluster_node_count: 3
 
-mapr_disks: [ "/dev/xvdf", "/dev/xvdg" ]
+mapr_disks: [ "/dev/xvdf" ]
 
 proxy_env: { }
-#proxy_env:
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128

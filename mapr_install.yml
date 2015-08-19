@@ -64,6 +64,13 @@
   roles:
     - mapr_fileserver
 
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_hbasemaster, when: hbase_enabled }
+    - { role: mapr_hbaseregionserver, when: hbase_enabled }
+
 - hosts: edge
   vars_files:
     - vars/global/main.yml
@@ -134,6 +141,12 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_httpfs, when: httpfs_enabled is defined and httpfs_enabled == True }
+
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_solr, when: solr_enabled }
 
 - hosts: oozie
   vars_files:

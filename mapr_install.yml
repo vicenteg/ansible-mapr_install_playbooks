@@ -8,7 +8,6 @@
     - { role: mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
     - { role: mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
     - { role: ntp }
-    - mapr_external_packages
     - python_lxml
 
 - hosts: zookeepers
@@ -89,6 +88,18 @@
   roles:
     - mapr_zookeeper_startup
 
+- hosts: cluster
+  vars_files:
+    - vars/global/main.yml
+  tasks:
+    - name: tune MFS memory if memory is low
+      lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.percent line=service.command.mfs.heapsize.percent=20 backup=yes
+      when: ansible_memtotal_mb < 8192
+
+    - name: tune MFS memory if memory is low
+      lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.percent=65 backup=yes
+      when: ansible_memtotal_mb < 8192
+
 - hosts: cldb
   vars_files:
     - vars/global/main.yml
@@ -114,6 +125,7 @@
     - name: set replication to 1 if single node
       shell: maprcli volume list -columns volumename | grep -v volumename | awk '{print $1}' | xargs -n1 -I'{}' maprcli volume modify -name '{}' -replication 1 -minreplication 1
       when: groups['cluster'] | length == 1
+
 
 - hosts: cluster
   vars_files:

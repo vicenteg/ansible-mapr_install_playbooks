@@ -96,6 +96,8 @@
     - mapr_cldb_startup
 
 - hosts: cldb[0]
+  vars_files:
+    - vars/global/main.yml
   sudo: yes
   sudo_user: mapr
   tasks:

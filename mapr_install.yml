@@ -183,6 +183,7 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_drill, when: drill_enabled is defined and drill_enabled == True }
+    - { role: mapr_drill_test, when: drill_enabled is defined and drill_enabled == True }
 
 - hosts: cluster
   sudo: yes

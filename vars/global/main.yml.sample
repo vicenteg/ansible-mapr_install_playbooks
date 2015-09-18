@@ -14,6 +14,7 @@ ec2_regions:
   east-1a:
     region: us-east-1
     zone: us-east-1a
+    placement_group:
     cluster_node_count: '{{cluster_node_count}}'
     edge_node_count: '{{edge_node_count}}'
     edge_node_price: '{{edge_node_price}}'

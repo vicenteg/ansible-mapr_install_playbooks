@@ -92,7 +92,7 @@ mysql_root_user: root
 mysql_root_password: mapr
 
 # Set the cluster name 
-cluster_name: vgonzalez.secure
+cluster_name: cluster.mapr.com
 mapr_admin_username: mapr
 # MapR user Password, sha1 crypted (see ansible-vault if you wish to encrypt this file)
 mapr_user_pw: $1$98q6OUnc$2/PJybdtQk5Nk7.SLoAdv1
@@ -105,6 +105,7 @@ maprlogin_pw_clear: mapr
 mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 
 # Set up your HTTP proxy, if needed.
+# Remove the curly braces if you add proxy entries.
 proxy_env: { }
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128

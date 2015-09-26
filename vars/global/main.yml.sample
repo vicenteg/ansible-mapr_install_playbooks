@@ -67,9 +67,8 @@ ec2_regions:
     edge_node_count: '{{edge_node_count}}'
     edge_node_price: '{{edge_node_price}}'
     cluster_node_price: '{{cluster_node_price}}'
-    security_group: { }
-      #- vpc-internal
-      #- ssh-only
+    security_group:
+      - ssh-only
     vpc_subnet:
     image: ami-1ecae776 # Amazon Linux HVM, us-east-1
     assign_public_ip: no

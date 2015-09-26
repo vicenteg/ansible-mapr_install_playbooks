@@ -1,38 +1,31 @@
+# set the host from which you want to download MapR packages.
+# This will be used to set up your yum repo.
 mirror_host: package.mapr.com
+
+# Choose the MapR version you want.
+# Be sure to include the 'v'.
 mapr_version: v5.0.0
-aws_access_key: ACBDEFGHIJKLMNOP
-aws_secret_key: aBcDeFgHiJkLmNoP
-license_file: /path/to/a/license/file.txt
-secure_cluster: "True"
 
+# Set your AWS credentials.
+aws_access_key:
+aws_secret_key:
+ec2_keypair:
+
+# Optionally provide a license key file here.
+license_file:
+
+# Configure security, or not.
+secure_cluster: True
+
+# Set your NTP servers. Change these to local ones
+# If you don't have internet access
 ntp_config_server:
-  - pool.ntp.org
-  - pool.ntp.org
-  - pool.ntp.org
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
 
-ec2_regions:
-  east-1a:
-    region: us-east-1
-    zone: us-east-1a
-    cluster_node_count: '{{cluster_node_count}}'
-    edge_node_count: '{{edge_node_count}}'
-    edge_node_price: '{{edge_node_price}}'
-    cluster_node_price: '{{cluster_node_price}}'
-    security_group:
-      - vpc-internal
-      - ssh-only
-    vpc_subnet: subnet-8f999ba7
-    #image: ami-c2a818aa # CentOS 6 HVM
-    image: ami-1ecae776 # Amazon Linux HVM
-    assign_public_ip: no
-cluster_node_volumes:
-  - device_name: /dev/xvdb
-    volume_size: 20
-    delete_on_termination: true
-  - device_name: /dev/xvdf
-    volume_size: 72
-    delete_on_termination: true
-
+# Choose your ecosystem components.
 classic_enabled: False
 hive_enabled: True
 pig_enabled: True
@@ -43,37 +36,75 @@ solr_enabled: False
 hbase_enabled: False
 drill_enabled: True
 impala_enabled: False
-oozie_enabled: True
-httpfs_enabled: True
-hue_enabled: True
+oozie_enabled: False
+httpfs_enabled: False
+hue_enabled: False
 
-tsdb_host: '{{groups["opentsdb"][0]}}'
+# These variables are used below in the ec2_regions dictionary in case
+# you want to use multiple regions (not recommended for a single cluster)
+# Set the instance type.
+cluster_node_type: d2.xlarge
+
+# If the node_price variables are set, ansible will request a spot instance.
+cluster_node_price: 
+edge_node_price: .25
+edge_node_count: 0
+
+# How long, in seconds, to wait for your spot instances to be fulfilled.
+ec2_spot_wait_timeout: 900
+
+# How many nodes to request per region.
+cluster_node_count: 3
+
+# ec2_regions is a dictionary with some fairly self-explanatory variables.
+# Be sure to change the security groups, vpc-subnet and image. Image should
+# not need changing unless you are changing the region.
+ec2_regions:
+  east-1a:
+    region: us-east-1
+    zone: us-east-1a
+    cluster_node_count: '{{cluster_node_count}}'
+    edge_node_count: '{{edge_node_count}}'
+    edge_node_price: '{{edge_node_price}}'
+    cluster_node_price: '{{cluster_node_price}}'
+    security_group: { }
+      #- vpc-internal
+      #- ssh-only
+    vpc_subnet:
+    image: ami-1ecae776 # Amazon Linux HVM, us-east-1
+    assign_public_ip: no
+    placement_group:
+
+# Create EBS volumes. Example below is for creating a 20GB volume that
+# could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
+#cluster_node_volumes:
+#  - device_name: /dev/xvdb
+#    volume_size: 20
+#    delete_on_termination: true
+#  - device_name: /dev/xvdf
+#    volume_size: 72
+#    delete_on_termination: true
+
 
 # MySQL credentials for hive, hue
+# Password in clear text (see ansible-vault if you wish to encrypt this file)
 mysql_root_user: root
 mysql_root_password: mapr
 
 # Set the cluster name 
-cluster_name: ansible
+cluster_name: vgonzalez.secure
 mapr_admin_username: mapr
+# MapR user Password, sha1 crypted (see ansible-vault if you wish to encrypt this file)
 mapr_user_pw: $1$98q6OUnc$2/PJybdtQk5Nk7.SLoAdv1
 maprlogin_username: mapr
+# Password in clear text (see ansible-vault if you wish to encrypt this file)
 maprlogin_pw_clear: mapr
 
-# ec2 settings
-# be sure to look these over carefully,
-# particularly security groups and keypair
-#
-# ec2 keypair
-ec2_keypair: my_keypair
-cluster_node_type: m4.xlarge
-cluster_node_price: 
-edge_node_price: 
-edge_node_count: 0
-cluster_node_count: 3
+# disks to use on each node. The default below is for a d2.xlarge
+# instance, which provides two instance store volumes.
+mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 
-mapr_disks: [ "/dev/xvdf" ]
-
+# Set up your HTTP proxy, if needed.
 proxy_env: { }
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128

@@ -185,6 +185,21 @@
     - { role: mapr_drill, when: drill_enabled is defined and drill_enabled == True }
     - { role: mapr_drill_test, when: drill_enabled is defined and drill_enabled == True }
 
+- hosts: spark_master
+  sudo: yes
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled }
+
+- hosts: spark_slave
+  sudo: yes
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
+
+
 - hosts: cluster
   sudo: yes
   vars_files:

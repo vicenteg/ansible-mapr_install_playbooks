@@ -39,6 +39,7 @@ impala_enabled: False
 oozie_enabled: False
 httpfs_enabled: False
 hue_enabled: False
+kafka_enabled: False
 
 # These variables are used below in the ec2_regions dictionary in case
 # you want to use multiple regions (not recommended for a single cluster)

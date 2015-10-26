@@ -220,6 +220,12 @@
   roles:
     - { role: mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
+- hosts: kafka
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_kafka, when: kafka_enabled is defined and kafka_enabled == True }
+
 - hosts: edge;cluster
   sudo_user: mapr
   vars_files:

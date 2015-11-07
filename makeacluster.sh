@@ -18,5 +18,5 @@ time (
 	fi
 
 	ansible-playbook -i inventory.py -u $user wait.yml
-	ansible-playbook -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml
+	ansible-playbook -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml
 )

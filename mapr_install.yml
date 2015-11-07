@@ -74,7 +74,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_client
+    - { role: mapr_client }
 
 - hosts: all
   vars_files:
@@ -190,7 +190,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled }
+    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled and yarn_enabled is defined and yarn_enabled == False }
 
 - hosts: spark_slave
   sudo: yes
@@ -198,7 +198,7 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
-
+    - { role: mapr_spark_test, when: spark_enabled is defined and spark_enabled and skip_tests == False }
 
 - hosts: cluster
   sudo: yes

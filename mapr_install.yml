@@ -146,7 +146,7 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
-    - { role: mapr_hive_test, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
+    - { role: mapr_hive_test, tags: [ "test" ], when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
 
 - hosts: cluster
   vars_files:
@@ -183,7 +183,7 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_drill, when: drill_enabled is defined and drill_enabled == True }
-    - { role: mapr_drill_test, when: drill_enabled is defined and drill_enabled == True }
+    - { role: mapr_drill_test, tags: [ "test" ], when: drill_enabled is defined and drill_enabled == True }
 
 - hosts: spark_master
   sudo: yes
@@ -198,7 +198,7 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
-    - { role: mapr_spark_test, when: spark_enabled is defined and spark_enabled and skip_tests == False }
+    - { role: mapr_spark_test, tags: [ "test" ], when: spark_enabled is defined and spark_enabled }
 
 - hosts: cluster
   sudo: yes
@@ -231,4 +231,4 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_post_install_test, when: skip_tests is defined and skip_tests == False }
+    - { role: mapr_post_install_test, tags: [ "test" ] }

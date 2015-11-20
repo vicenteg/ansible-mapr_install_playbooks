@@ -109,3 +109,5 @@ mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 proxy_env: { }
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128
+
+skip_tests: False

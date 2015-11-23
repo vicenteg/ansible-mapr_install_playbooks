@@ -212,6 +212,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
+    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
     - { role: mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster

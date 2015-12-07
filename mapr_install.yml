@@ -80,7 +80,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_configuration
+    - { role: mapr_configuration, tags: configuration }
 
 - hosts: zookeepers
   vars_files:
@@ -93,10 +93,12 @@
     - vars/global/main.yml
   tasks:
     - name: tune MFS memory if memory is low
+      sudo_user: root
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.percent line=service.command.mfs.heapsize.percent=20 backup=yes
       when: ansible_memtotal_mb < 16384
 
     - name: tune MFS memory if memory is low
+      sudo_user: root
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.maxpercent=65 backup=yes
       when: ansible_memtotal_mb < 16384
 

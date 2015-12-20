@@ -1,11 +1,6 @@
 - hosts: localhost
   vars_files:
     - vars/global/main.yml
-  tasks:
-    - assert:
-        that:
-          - aws_access_key is defined
-          - aws_secret_key is defined
   roles:
     - mapr_aws_bootstrap
 

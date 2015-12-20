@@ -9,7 +9,6 @@ mapr_version: v5.0.0
 # Set your AWS credentials.
 aws_access_key:
 aws_secret_key:
-ec2_keypair:
 
 # Optionally provide a license key file here.
 license_file:
@@ -41,22 +40,6 @@ httpfs_enabled: False
 hue_enabled: False
 kafka_enabled: False
 
-# These variables are used below in the ec2_regions dictionary in case
-# you want to use multiple regions (not recommended for a single cluster)
-# Set the instance type.
-cluster_node_type: d2.xlarge
-
-# If the node_price variables are set, ansible will request a spot instance.
-cluster_node_price: 
-edge_node_price: .25
-edge_node_count: 0
-
-# How long, in seconds, to wait for your spot instances to be fulfilled.
-ec2_spot_wait_timeout: 900
-
-# How many nodes to request per region.
-cluster_node_count: 3
-
 # ec2_regions is a dictionary with some fairly self-explanatory variables.
 # Be sure to change the security groups, vpc-subnet and image. Image should
 # not need changing unless you are changing the region.
@@ -64,9 +47,44 @@ ec2_regions:
   east-1a:
     region: us-east-1
     zone: us-east-1a
-    cluster_node_count: '{{cluster_node_count}}'
-    edge_node_count: '{{edge_node_count}}'
-    edge_node_price: '{{edge_node_price}}'
+    keypair: 
+    # How many nodes to request per region.
+    cluster_node_type: d2.xlarge
+    cluster_node_count: 3
+    # Create ephemeral volumes. Example below is for d2.xlarge, which provides
+    # three 2TB volumes. The data will be lost when the node is terminated or 
+    # stopped.
+    # Do not specify a size, or you will get an EBS volume.
+    cluster_node_volumes:
+      - device_name: /dev/xvdf
+        ephemeral: ephemeral0
+      - device_name: /dev/xvdg
+        ephemeral: ephemeral1
+      - device_name: /dev/xvdh
+        ephemeral: ephemeral2
+    # Create EBS volumes. Example below is for creating a 20GB volume that
+    # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
+    #cluster_node_volumes:
+    #  - device_name: /dev/xvdb
+    #    volume_size: 20
+    #    delete_on_termination: true
+    #  - device_name: /dev/xvdf
+    #    volume_size: 72
+    #    delete_on_termination: true
+    edge_node_type: m4.xlarge
+    edge_node_count: 0
+    # Create EBS volumes. Example below is for creating a 20GB volume that
+    # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
+    edge_node_volumes:
+      - device_name: /dev/xvdb
+        volume_size: 20
+        delete_on_termination: true
+      - device_name: /dev/xvdf
+        volume_size: 72
+        delete_on_termination: true
+    # If the node_price variables are set, ansible will request a spot instance.
+    edge_node_price:
+    spot_wait_timeout: 900
     cluster_node_price: '{{cluster_node_price}}'
     security_group:
       - ssh-only
@@ -74,17 +92,6 @@ ec2_regions:
     image: ami-1ecae776 # Amazon Linux HVM, us-east-1
     assign_public_ip: no
     placement_group:
-
-# Create EBS volumes. Example below is for creating a 20GB volume that
-# could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
-#cluster_node_volumes:
-#  - device_name: /dev/xvdb
-#    volume_size: 20
-#    delete_on_termination: true
-#  - device_name: /dev/xvdf
-#    volume_size: 72
-#    delete_on_termination: true
-
 
 # MySQL credentials for hive, hue
 # Password in clear text (see ansible-vault if you wish to encrypt this file)
@@ -107,6 +114,7 @@ mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 # Set up your HTTP proxy, if needed.
 # Remove the curly braces if you add proxy entries.
 proxy_env: { }
+#proxy_env:
 #  http_proxy: http://172.16.1.58:3128
 #  https_proxy: http://172.16.1.58:3128
 

@@ -80,7 +80,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_configuration
+    - { role: mapr_configuration, tags: configuration }
 
 - hosts: zookeepers
   vars_files:
@@ -93,12 +93,14 @@
     - vars/global/main.yml
   tasks:
     - name: tune MFS memory if memory is low
+      sudo_user: root
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.percent line=service.command.mfs.heapsize.percent=20 backup=yes
-      when: ansible_memtotal_mb < 8192
+      when: ansible_memtotal_mb < 16384
 
     - name: tune MFS memory if memory is low
-      lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.percent=65 backup=yes
-      when: ansible_memtotal_mb < 8192
+      sudo_user: root
+      lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.maxpercent=65 backup=yes
+      when: ansible_memtotal_mb < 16384
 
 - hosts: cldb
   vars_files:
@@ -212,6 +214,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
+    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
     - { role: mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster

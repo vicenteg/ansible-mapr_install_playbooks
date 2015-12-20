@@ -14,6 +14,7 @@
         instance_ids: [ "{{instance_id}}" ]
       when: instance_id is defined
       with_dict: ec2_regions
+      register: terminated
 
     - name: remove inventory file
       run_once: yes
@@ -21,3 +22,4 @@
         module: file
         path: inventory.py
         state: absent
+      when: terminated.changed

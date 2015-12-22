@@ -179,7 +179,7 @@ ec2_regions:
       - vpc-internal
     vpc_subnet: subnet-8f999ba7
     image: ami-1ecae776 # Amazon Linux HVM, us-east-1
-    assign_public_ip: yes
+    assign_public_ip: no
     instance_tags:
       Name: '{{cluster_name}}'
     placement_group: vgonzalez

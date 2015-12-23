@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 user=ec2-user
 mount=/media/ephemeral0
 vault_password_file="vault_pass"

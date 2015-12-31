@@ -1,6 +1,9 @@
 # Set the cluster name. A real DNS name is good.
 cluster_name: mapr.example.com
 
+# MCS webserver. Leave this alone unless you have special needs.
+mapr_webserver: https://{{groups["webserver"][0]}}:8443
+
 # set the admin username. This is usually
 # mapr, and probably does not need to be changed
 # in most environments.

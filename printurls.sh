@@ -1,5 +1,10 @@
 #!/bin/sh 
 
+if [ ! -f inventory.py ]; then
+	echo "No inventory file."
+	exit 1
+fi
+
 if jq . < /dev/null ; then
 	# print MCS URLs
 	./inventory.py | jq '.["webserver"] | map("MCS: https://\(.):8443")'

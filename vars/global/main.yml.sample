@@ -118,18 +118,6 @@ hue_build: 201508031317-1
 kafka_enabled: False
 kafka_version: "0.8.2.2"
 
-# These variables are used below in the ec2_regions dictionary in case
-# you want to use multiple regions (not recommended for a single cluster)
-# Set the instance type.
-
-# If the node_price variables are set, ansible will request a spot instance.
-cluster_node_price: .30
-edge_node_price: .30
-edge_node_count: 1
-
-# How many nodes to request per region.
-cluster_node_count: 3
-
 # ec2_regions is a dictionary with some fairly self-explanatory variables.
 # Be sure to change the security groups, vpc-subnet and image. Image should
 # not need changing unless you are changing the region.
@@ -142,6 +130,7 @@ ec2_regions:
     # How many nodes to request per region.
     cluster_node_type: m4.xlarge
     cluster_node_count: 4
+    # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
     # Create ephemeral volumes. Example below is for d2.xlarge, which provides
     # three 2TB volumes. The data will be lost when the node is terminated or
@@ -167,6 +156,8 @@ ec2_regions:
         volume_size: 36
         delete_on_termination: true
     edge_node_type: m4.xlarge
+    # If the node_price variables are set, ansible will request a spot instance.
+    edge_node_price:
     edge_node_count: 1
     edge_node_price:
     # Create EBS volumes. Example below is for creating a 20GB volume that

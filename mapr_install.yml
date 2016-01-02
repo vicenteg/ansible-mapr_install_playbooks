@@ -141,7 +141,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_license, when: license_file is defined }
+    - { role: mapr_license, when: license_file is defined and license_file != '' }
 
 - hosts: hiveserver
   vars_files:

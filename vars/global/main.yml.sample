@@ -30,7 +30,7 @@ mirror_host: package.mapr.com
 mapr_version: v5.0.0
 
 # Optionally provide a license key file here.
-license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestM7License.txt
+license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
 
 # Configure security, or not. Do it!
 secure_cluster: True

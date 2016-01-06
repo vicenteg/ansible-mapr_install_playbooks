@@ -5,6 +5,7 @@
     - vars/global/main.yml
   roles:
     - mapr_accounts
+    - { role: mapr_external_packages, tags: external, when: ansible_os_family == 'RedHat' }
     - { role: mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
     - { role: mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
     - { role: ntp }
@@ -228,6 +229,14 @@
     - vars/global/main.yml
   roles:
     - { role: mapr_kafka, when: kafka_enabled is defined and kafka_enabled == True }
+
+- hosts: edge
+  vars_files:
+    - vars/global/main.yml
+  roles:
+    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: mapr_loopbacknfs }
+    - { role: mapr_pcapstream }
 
 - hosts: edge;cluster
   sudo_user: mapr

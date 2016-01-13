@@ -94,8 +94,8 @@ hbase_version: 0.98.12
 hbase_build: 201507081709-1
 
 drill_enabled: True
-drill_version: "1.2.0"
-drill_build: "201510071035"
+drill_version: "1.4.0"
+drill_build: "201601071151-1"
 
 impala_enabled: False
 

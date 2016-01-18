@@ -78,8 +78,8 @@ pig_build: 201509021826-1
 
 # Apache Spark
 spark_enabled: True
-spark_version: "1.5.2"
-spark_build: "201512161339-1"
+spark_version: 1.5.2
+spark_build: 201512161339-1
 
 # OpenTSDB
 opentsdb_enabled: True
@@ -94,15 +94,15 @@ hbase_version: 0.98.12
 hbase_build: 201507081709-1
 
 drill_enabled: True
-drill_version: "1.4.0"
+drill_version: 1.4.0
 drill_build: "201601071151-1"
 
 impala_enabled: False
 
 # Apache Oozie
 oozie_enabled: False
-oozie_version: 4.1.0
-oozie_build: 201507061427-1
+oozie_version: 4.2.0
+oozie_build: 201511171640-1
 
 # HTTPFS
 httpfs_enabled: False
@@ -110,9 +110,9 @@ httpfs_version: 1.0
 httpfs_build: 201505061449-1
 
 # Hue
-hue_enabled: False
-hue_version: 3.8.1
-hue_build: 201508031317-1
+hue_enabled: True
+hue_version: 3.9.0
+hue_build: 201511191616-1
 
 # Apache Kafka
 kafka_enabled: False

@@ -236,7 +236,6 @@
   roles:
     - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
     - { role: mapr_loopbacknfs }
-    - { role: mapr_pcapstream }
 
 - hosts: edge;cluster
   sudo_user: mapr

@@ -6,6 +6,9 @@ if [ ! -f inventory.py ]; then
 fi
 
 if jq . < /dev/null ; then
+	# print edge node IPs
+	./inventory.py | jq '.["edge"] | map("Edge node: \(.)")'
+
 	# print MCS URLs
 	./inventory.py | jq '.["webserver"] | map("MCS: https://\(.):8443")'
 

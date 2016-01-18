@@ -105,7 +105,7 @@ oozie_version: 4.2.0
 oozie_build: 201511171640-1
 
 # HTTPFS
-httpfs_enabled: False
+httpfs_enabled: True
 httpfs_version: 1.0
 httpfs_build: 201505061449-1
 

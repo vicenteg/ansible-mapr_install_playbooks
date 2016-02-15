@@ -4,90 +4,90 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_accounts
-    - { role: mapr_external_packages, tags: external, when: ansible_os_family == 'RedHat' }
-    - { role: mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
-    - { role: mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
-    - { role: ntp }
-    - python_lxml
+    - { role: vicenteg.mapr_accounts }
+    - { role: vicenteg.mapr_external_packages, tags: external, when: ansible_os_family == 'RedHat' }
+    - { role: vicenteg.mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
+    - { role: vicenteg.mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
+    - { role: vicenteg.ntp }
+    - { role: vicenteg.python_lxml }
 
 - hosts: zookeepers
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_zookeeper
+    - vicenteg.mapr_zookeeper
 
 - hosts: cldb
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_cldb
+    - vicenteg.mapr_cldb
 
 - hosts: resourcemanager
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_resourcemanager, when: yarn_enabled is defined and yarn_enabled == True }
+    - { role: vicenteg.mapr_resourcemanager, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: historyserver
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_historyserver, when: yarn_enabled is defined and yarn_enabled == True }
+    - { role: vicenteg.mapr_historyserver, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: nodemanager
   max_fail_percentage: 0
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True }
+    - { role: vicenteg.mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True }
 
 - hosts: webserver
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_webserver
+    - vicenteg.mapr_webserver
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_nfs
+    - vicenteg.mapr_nfs
 
 - hosts: fileserver
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_fileserver
+    - vicenteg.mapr_fileserver
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hbasemaster, when: hbase_enabled }
-    - { role: mapr_hbaseregionserver, when: hbase_enabled }
+    - { role: vicenteg.mapr_hbasemaster, when: hbase_enabled }
+    - { role: vicenteg.mapr_hbaseregionserver, when: hbase_enabled }
 
 - hosts: edge
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_client }
+    - { role: vicenteg.mapr_client }
 
 - hosts: all
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_configuration, tags: configuration }
+    - { role: vicenteg.mapr_configuration, tags: configuration }
 
 - hosts: zookeepers
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_zookeeper_startup
+    - { role: vicenteg.mapr_zookeeper_startup }
 
 - hosts: cluster
   vars_files:
@@ -107,7 +107,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_cldb_startup
+    - { role: vicenteg.mapr_cldb_startup }
 
 - hosts: cldb[0]
   vars_files:
@@ -117,7 +117,7 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
   tasks:
     - name: set default desired replication to 1
       command: maprcli config save -values "{cldb.volumes.default.replication:1}"
@@ -136,110 +136,110 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_cluster_startup
+    - { role: vicenteg.mapr_cluster_startup }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_license, when: license_file is defined and license_file != '' }
+    - { role: vicenteg.mapr_license, when: license_file is defined and license_file != '' }
 
 - hosts: hiveserver
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
-    - { role: mapr_hive_test, tags: [ "test" ], when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
+    - { role: vicenteg.mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
+    - { role: vicenteg.mapr_hive_test, tags: [ "test" ], when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_pig, when: classic_enabled or yarn_enabled and pig_enabled is defined and pig_enabled == True }
+    - { role: vicenteg.mapr_pig, when: classic_enabled or yarn_enabled and pig_enabled is defined and pig_enabled == True }
 
 - hosts: hue
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_httpfs, when: httpfs_enabled is defined and httpfs_enabled == True }
+    - { role: vicenteg.mapr_httpfs, when: httpfs_enabled is defined and httpfs_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_solr, when: solr_enabled }
+    - { role: vicenteg.mapr_solr, when: solr_enabled }
 
 - hosts: oozie
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_oozie, when: classic_enabled or yarn_enabled and oozie_enabled is defined and oozie_enabled == True }
+    - { role: vicenteg.mapr_oozie, when: classic_enabled or yarn_enabled and oozie_enabled is defined and oozie_enabled == True }
 
 - hosts: hue
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_hue, when: hue_enabled is defined and hue_enabled == True }
+    - { role: vicenteg.mapr-hue, when: hue_enabled is defined and hue_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_drill, tags: [ "drill" ], when: drill_enabled is defined and drill_enabled == True }
-    - { role: mapr_drill_test, tags: [ "test" ], when: drill_enabled is defined and drill_enabled == True }
+    - { role: vicenteg.mapr_drill, tags: [ "drill" ], when: drill_enabled is defined and drill_enabled == True }
+    - { role: vicenteg.mapr_drill_test, tags: [ "test" ], when: drill_enabled is defined and drill_enabled == True }
 
 - hosts: spark_master
   sudo: yes
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_spark_master, when: spark_enabled is defined and spark_enabled and yarn_enabled is defined and yarn_enabled == False }
+    - { role: vicenteg.mapr_spark_master, when: spark_enabled is defined and spark_enabled and yarn_enabled is defined and yarn_enabled == False }
 
 - hosts: spark_slave
   sudo: yes
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
-    - { role: mapr_spark_test, tags: [ "test" ], when: spark_enabled is defined and spark_enabled and skip_tests == False }
+    - { role: vicenteg.mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
+    - { role: vicenteg.mapr_spark_test, tags: [ "test" ], when: spark_enabled is defined and spark_enabled and skip_tests == False }
 
 - hosts: cluster
   sudo: yes
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: user_account, user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.user_account, user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: opentsdb
   sudo: yes
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
-    - { role: mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: vicenteg.mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: kafka
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_kafka, when: kafka_enabled is defined and kafka_enabled == True }
+    - { role: vicenteg.mapr-kafka, when: kafka_enabled is defined and kafka_enabled == True }
 
 - hosts: edge
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
-    - { role: mapr_loopbacknfs }
+    - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: vicenteg.mapr_loopbacknfs }
 
 - hosts: edge;cluster
   sudo_user: mapr
   vars_files:
     - vars/global/main.yml
   roles:
-    - { role: mapr_post_install_test, tags: [ "test" ], when: skip_tests is defined and skip_tests == False }
+    - { role: vicenteg.mapr_post_install_test, tags: [ "test" ], when: skip_tests is defined and skip_tests == False }

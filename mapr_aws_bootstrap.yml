@@ -2,5 +2,5 @@
   vars_files:
     - vars/global/main.yml
   roles:
-    - mapr_aws_bootstrap
+    - vicenteg.mapr_aws_bootstrap
 

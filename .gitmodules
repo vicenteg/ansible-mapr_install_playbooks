@@ -1,0 +1,6 @@
+[submodule "library"]
+	path = library
+	url = https://github.com/vicenteg/ansible-library.git
+[submodule "templates/encoder"]
+	path = templates/encoder
+	url = https://github.com/picotrading/config-encoder-macros

@@ -1,6 +1,4 @@
 - hosts: localhost
-  vars_files:
-    - vars/global/main.yml
   roles:
     - vicenteg.mapr_aws_bootstrap
 

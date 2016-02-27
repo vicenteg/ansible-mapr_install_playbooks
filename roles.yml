@@ -104,3 +104,9 @@
   version: galaxy
 - src: vicenteg.mapr-kafka
   version: galaxy
+- src: vicenteg.mapr_mesos
+  version: master
+- src: vicenteg.mapr_mesos_slave
+  version: master
+- src: vicenteg.mapr_mesos_slave
+  version: master

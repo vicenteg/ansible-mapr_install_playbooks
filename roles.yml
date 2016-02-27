@@ -106,7 +106,7 @@
   version: galaxy
 - src: vicenteg.mapr_mesos
   version: master
-- src: vicenteg.mapr_mesos_slave
+- src: vicenteg.mapr_mesos_master
   version: master
 - src: vicenteg.mapr_mesos_slave
   version: master

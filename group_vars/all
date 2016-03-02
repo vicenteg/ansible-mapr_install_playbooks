@@ -23,7 +23,8 @@ maprlogin_pw_clear: mapr
 
 # set the host from which you want to download MapR packages.
 # This will be used to set up your yum repo.
-mirror_host: mapr-partner.s3.amazonaws.com
+# mirror_host: mapr-partner.s3.amazonaws.com
+mirror_host: package.mapr.com
 
 # Choose the MapR version you want.
 # Be sure to include the 'v'.
@@ -81,12 +82,12 @@ pig_version: 0.14
 pig_build: 201509021826-1
 
 # Apache Spark
-spark_enabled: False
+spark_enabled: True
 spark_version: 1.5.2
-spark_build: 201602040626-1
+spark_build: 201602261506-1
 
 # OpenTSDB
-opentsdb_enabled: False
+opentsdb_enabled: True
 
 # Apache Solr
 solr_enabled: False
@@ -95,7 +96,7 @@ solr_version: 4.10.3
 # Apache HBase
 hbase_enabled: False
 hbase_version: 0.98.12
-hbase_build: 201507081709-1
+hbase_build: "201603011130-1"
 
 drill_enabled: False
 drill_version: 1.4.0
@@ -106,7 +107,7 @@ impala_enabled: False
 # Apache Oozie
 oozie_enabled: False
 oozie_version: 4.2.0
-oozie_build: 201601281619-1
+oozie_build: 201603011312-1
 
 # HTTPFS
 httpfs_enabled: False
@@ -114,7 +115,7 @@ httpfs_version: 1.0
 httpfs_build: 201505061449-1
 
 # Hue
-hue_enabled: False
+hue_enabled: True
 hue_version: 3.9.0
 hue_build: 201511191616-1
 
@@ -185,5 +186,5 @@ proxy_env:
 skip_tests: False
 gpgcheck: 0
 
-core_top_level_dirs: []
-ecosystem_top_level_dirs: []
+#core_top_level_dirs: []
+#ecosystem_top_level_dirs: []

@@ -107,12 +107,12 @@ impala_enabled: False
 # Apache Oozie
 oozie_enabled: False
 oozie_version: 4.2.0
-oozie_build: 201603011312-1
+oozie_build: "201603011312-1"
 
 # HTTPFS
 httpfs_enabled: False
 httpfs_version: 1.0
-httpfs_build: 201505061449-1
+httpfs_build: "201505061449-1"
 
 # Hue
 hue_enabled: True
@@ -134,7 +134,7 @@ ec2_regions:
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
     cluster_node_type: m4.2xlarge
-    cluster_node_count: 3
+    cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price: .35
     # Create ephemeral volumes. Example below is for d2.xlarge, which provides

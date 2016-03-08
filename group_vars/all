@@ -1,5 +1,5 @@
 # Set the cluster name. A real DNS name is good.
-cluster_name: mapr.example.com
+cluster_name: vgonzalez.myriad
 
 # MCS webserver. Leave this alone unless you have special needs.
 mapr_webserver: https://{{groups["webserver"][0]}}:8443
@@ -23,11 +23,12 @@ maprlogin_pw_clear: mapr
 
 # set the host from which you want to download MapR packages.
 # This will be used to set up your yum repo.
+# mirror_host: mapr-partner.s3.amazonaws.com
 mirror_host: package.mapr.com
 
 # Choose the MapR version you want.
 # Be sure to include the 'v'.
-mapr_version: v5.0.0
+mapr_version: v5.1.0
 
 # Optionally provide a license key file here.
 license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
@@ -37,7 +38,7 @@ secure_cluster: True
 
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides two instance store volumes.
-mapr_disks: [ "/dev/xvdf","/dev/xvdg", "/dev/xvdh", "/dev/xvdi", "/dev/xvdj", "/dev/xvdk" ]
+mapr_disks: [ "/dev/xvdf" ]
 
 
 # Default NTP servers are below. Uncomment and override these defaults
@@ -61,10 +62,14 @@ ntp_config_server:
 yarn_enabled:  True
 classic_enabled: False
 
+# Apache Myriad
+myriad_enabled: True
+myriad_framework_name: myriad
+
 # Apache Hive
 hive_enabled: True
 hive_version: "1.2"
-hive_build: "201601281422-1"
+hive_build: "201601281422"
 # MySQL credentials for hivemeta, hue
 # Password is in clear text (see ansible-vault if you wish to encrypt this file)
 mysql_root_user: root
@@ -79,7 +84,7 @@ pig_build: 201509021826-1
 # Apache Spark
 spark_enabled: True
 spark_version: 1.5.2
-spark_build: 201512161339-1
+spark_build: 201602261506-1
 
 # OpenTSDB
 opentsdb_enabled: True
@@ -91,9 +96,9 @@ solr_version: 4.10.3
 # Apache HBase
 hbase_enabled: False
 hbase_version: 0.98.12
-hbase_build: 201507081709-1
+hbase_build: "201603011130-1"
 
-drill_enabled: True
+drill_enabled: False
 drill_version: 1.4.0
 drill_build: "201601071151-1"
 
@@ -102,12 +107,12 @@ impala_enabled: False
 # Apache Oozie
 oozie_enabled: False
 oozie_version: 4.2.0
-oozie_build: 201511171640-1
+oozie_build: "201603011312-1"
 
 # HTTPFS
-httpfs_enabled: True
+httpfs_enabled: False
 httpfs_version: 1.0
-httpfs_build: 201505061449-1
+httpfs_build: "201505061449-1"
 
 # Hue
 hue_enabled: True
@@ -128,36 +133,23 @@ ec2_regions:
     zone: us-east-1a
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
-    cluster_node_type: d2.2xlarge
-    cluster_node_count: 5
+    cluster_node_type: m4.2xlarge
+    cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price: .35
     # Create ephemeral volumes. Example below is for d2.xlarge, which provides
     # three 2TB volumes. The data will be lost when the node is terminated or
     # stopped.
     # Do not specify a size, or you will get an EBS volume.
-    cluster_node_volumes:
-      - device_name: /dev/xvdf
-        ephemeral: ephemeral0
-      - device_name: /dev/xvdg
-        ephemeral: ephemeral1
-      - device_name: /dev/xvdh
-        ephemeral: ephemeral2
-      - device_name: /dev/xvdi
-        ephemeral: ephemeral3
-      - device_name: /dev/xvdj
-        ephemeral: ephemeral4
-      - device_name: /dev/xvdk
-        ephemeral: ephemeral5
     # Create EBS volumes. Example below is for creating a 20GB volume that
     # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
-    #cluster_node_volumes:
+    cluster_node_volumes:
     #  - device_name: /dev/xvdb
     #    volume_size: 20
     #    delete_on_termination: true
-    #  - device_name: /dev/xvdf
-    #    volume_size: 36
-    #    delete_on_termination: true
+      - device_name: /dev/xvdf
+        volume_size: 60
+        delete_on_termination: true
     #  - device_name: /dev/xvdg
     #    volume_size: 36
     #    delete_on_termination: true
@@ -179,6 +171,7 @@ ec2_regions:
       - vpc-internal
     vpc_subnet: subnet-8f999ba7
     image: ami-1ecae776 # Amazon Linux HVM, us-east-1
+    #image: ami-57cd8732
     assign_public_ip: no
     instance_tags:
       Name: '{{cluster_name}}'
@@ -191,3 +184,7 @@ proxy_env:
 
 # Skip the tests, if you dare.
 skip_tests: False
+gpgcheck: 0
+
+#core_top_level_dirs: []
+#ecosystem_top_level_dirs: []

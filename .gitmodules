@@ -233,3 +233,12 @@
 	path = roles/vicenteg.scala
 	url = git@github.com:vicenteg/ansible-scala
 	branch = galaxy
+[submodule "roles/vicenteg.mapr_mesos_dns"]
+	path = roles/vicenteg.mapr_mesos_dns
+	url = git@github.com:vicenteg/mapr_mesos_dns.git
+[submodule "roles/vicenteg.mapr_myriad_startup"]
+	path = roles/vicenteg.mapr_myriad_startup
+	url = git@github.com:vicenteg/ansible-mapr_myriad_startup.git
+[submodule "roles/vicenteg.mesosphere-mesos"]
+	path = roles/vicenteg.mesosphere-mesos
+	url = git@github.com:vicenteg/ansible-mesosphere-mesos.git

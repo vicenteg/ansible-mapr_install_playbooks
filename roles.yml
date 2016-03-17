@@ -116,3 +116,5 @@
   version: master
 - src: vicenteg.mapr_mesos_dns
   version: master
+- src: vicenteg.mapr_myriad_startup
+  version: master

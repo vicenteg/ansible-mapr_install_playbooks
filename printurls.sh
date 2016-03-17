@@ -24,6 +24,9 @@ if jq . < /dev/null ; then
 	# print Spark URLs
 	# ./inventory.py | jq '.["spark_master"] | map("Spark Master: http://\(.):8080")'
 
+	# print Mesos URLs
+	./inventory.py | jq '.["mesosmaster"] | map("Mesos Master: http://\(.):8080")'
+
 	# print ResourceManager URLs
 	./inventory.py | jq '.["resourcemanager"] | map("Resource Manager: https://\(.):8090")'
 else

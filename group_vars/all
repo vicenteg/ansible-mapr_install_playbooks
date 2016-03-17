@@ -1,5 +1,5 @@
 # Set the cluster name. A real DNS name is good.
-cluster_name: vgonzalez.myriad
+cluster_name: vgonzalez.kafka
 
 # MCS webserver. Leave this alone unless you have special needs.
 mapr_webserver: https://{{groups["webserver"][0]}}:8443
@@ -37,9 +37,9 @@ license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicens
 secure_cluster: True
 
 # disks to use on each node. The default below is for a d2.xlarge
-# instance, which provides two instance store volumes.
-mapr_disks: [ "/dev/xvdf" ]
-
+# instance, which provides no instance store volumes. Volumes are
+# specified below, with the region information.
+mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
@@ -58,16 +58,26 @@ ntp_config_server:
 # as these playbooks make no attempt to validate compatibility.
 # OpenTSDB, Solr and Kafka are not packaged by MapR.
 
+# loopbacknfs
+loopbacknfs_enabled: True
+
+# Mesos and Myriad
+mesos_enabled: False
+mesos_dns_resolvers: '[ "172.16.0.2" ]'
+
 # YARN and/or classic MapReduce
 yarn_enabled:  True
 classic_enabled: False
 
 # Apache Myriad
-myriad_enabled: True
-myriad_framework_name: myriad
+myriad_enabled: False
+myriad_frameworks:
+  framework1:
+    name: framework1
+    rm_name: framework1-rm
 
 # Apache Hive
-hive_enabled: True
+hive_enabled: False
 hive_version: "1.2"
 hive_build: "201601281422"
 # MySQL credentials for hivemeta, hue
@@ -87,7 +97,7 @@ spark_version: 1.5.2
 spark_build: 201602261506-1
 
 # OpenTSDB
-opentsdb_enabled: True
+opentsdb_enabled: False
 
 # Apache Solr
 solr_enabled: False
@@ -115,12 +125,12 @@ httpfs_version: 1.0
 httpfs_build: "201505061449-1"
 
 # Hue
-hue_enabled: True
+hue_enabled: False
 hue_version: 3.9.0
 hue_build: 201511191616-1
 
 # Apache Kafka
-kafka_enabled: False
+kafka_enabled: True
 kafka_version: "0.9.0.0"
 
 # ec2_regions is a dictionary with some fairly self-explanatory variables.
@@ -136,24 +146,15 @@ ec2_regions:
     cluster_node_type: m4.2xlarge
     cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
-    cluster_node_price: .35
-    # Create ephemeral volumes. Example below is for d2.xlarge, which provides
-    # three 2TB volumes. The data will be lost when the node is terminated or
-    # stopped.
-    # Do not specify a size, or you will get an EBS volume.
-    # Create EBS volumes. Example below is for creating a 20GB volume that
-    # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
+    cluster_node_price:
     cluster_node_volumes:
-    #  - device_name: /dev/xvdb
-    #    volume_size: 20
-    #    delete_on_termination: true
       - device_name: /dev/xvdf
+        delete_on_termination: True
         volume_size: 60
-        delete_on_termination: true
-    #  - device_name: /dev/xvdg
-    #    volume_size: 36
-    #    delete_on_termination: true
-    edge_node_type: m4.xlarge
+      - device_name: /dev/xvdg
+        delete_on_termination: True
+        volume_size: 60
+    edge_node_type: m4.2xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
     edge_node_count: 1
@@ -175,7 +176,7 @@ ec2_regions:
     assign_public_ip: no
     instance_tags:
       Name: '{{cluster_name}}'
-    placement_group: vgonzalez
+    placement_group:
 
 # Set up your HTTP proxy, if needed.
 proxy_env:

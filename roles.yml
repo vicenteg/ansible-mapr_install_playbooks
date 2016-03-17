@@ -103,7 +103,7 @@
 - src: vicenteg.mapr_solr
   version: galaxy
 - src: vicenteg.mapr-kafka
-  version: galaxy
+  version: master
 - src: vicenteg.mapr_myriad
   version: master
 - src: vicenteg.mesosphere
@@ -113,4 +113,6 @@
 - src: vicenteg.mapr_mesos_master
   version: master
 - src: vicenteg.mapr_mesos_slave
+  version: master
+- src: vicenteg.mapr_mesos_dns
   version: master

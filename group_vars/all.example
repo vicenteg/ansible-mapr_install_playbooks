@@ -1,5 +1,5 @@
 # Set the cluster name. A real DNS name is good.
-cluster_name: vgonzalez.kafka
+cluster_name: logstash
 
 # MCS webserver. Leave this alone unless you have special needs.
 mapr_webserver: https://{{groups["webserver"][0]}}:8443
@@ -31,7 +31,7 @@ mirror_host: package.mapr.com
 mapr_version: v5.1.0
 
 # Optionally provide a license key file here.
-license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
+license_file:
 
 # Configure security, or not. Do it!
 secure_cluster: True
@@ -65,16 +65,16 @@ loopbacknfs_enabled: True
 mesos_enabled: False
 mesos_dns_resolvers: '[ "172.16.0.2" ]'
 
-# YARN and/or classic MapReduce
-yarn_enabled:  True
-classic_enabled: False
-
 # Apache Myriad
 myriad_enabled: False
 myriad_frameworks:
   framework1:
     name: framework1
     rm_name: framework1-rm
+
+# YARN and/or classic MapReduce
+yarn_enabled:  True
+classic_enabled: False
 
 # Apache Hive
 hive_enabled: False
@@ -85,14 +85,13 @@ hive_build: "201601281422"
 mysql_root_user: root
 mysql_root_password: mapr
 
-
 # Apache Pig
 pig_enabled: False
 pig_version: 0.14
 pig_build: 201509021826-1
 
 # Apache Spark
-spark_enabled: True
+spark_enabled: False
 spark_version: 1.5.2
 spark_build: 201602261506-1
 
@@ -130,7 +129,7 @@ hue_version: 3.9.0
 hue_build: 201511191616-1
 
 # Apache Kafka
-kafka_enabled: True
+kafka_enabled: False
 kafka_version: "0.9.0.0"
 
 # ec2_regions is a dictionary with some fairly self-explanatory variables.
@@ -154,10 +153,10 @@ ec2_regions:
       - device_name: /dev/xvdg
         delete_on_termination: True
         volume_size: 60
-    edge_node_type: m4.2xlarge
+    edge_node_type: m4.xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
-    edge_node_count: 1
+    edge_node_count: 0
     edge_node_price:
     # Create EBS volumes. Example below is for creating a 20GB volume that
     # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.

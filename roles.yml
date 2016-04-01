@@ -13,7 +13,7 @@
 - src: vicenteg.mapr_cluster_startup
   version: galaxy
 - src: vicenteg.mapr_configuration
-  version: galaxy
+  version: master
 - src: vicenteg.mapr_debian_prereqs
   version: galaxy
 - src: vicenteg.mapr_drill

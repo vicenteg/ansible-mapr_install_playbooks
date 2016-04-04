@@ -241,4 +241,4 @@
 	url = git@github.com:vicenteg/ansible-mapr_myriad_startup.git
 [submodule "roles/vicenteg.mesosphere-mesos"]
 	path = roles/vicenteg.mesosphere-mesos
-	url = git@github.com:vicenteg/ansible-mesosphere-mesos.git
+	url = https://github.com/vicenteg/ansible-mesosphere-mesos.git

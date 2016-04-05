@@ -2,7 +2,7 @@
 - hosts: all
   gather_facts: no
   tasks:
-    - name: Start all instances referred to by inventory file
+    - name: Stop all instances referred to by inventory file
       local_action:
         module: ec2
         region: '{{item.value.region}}'

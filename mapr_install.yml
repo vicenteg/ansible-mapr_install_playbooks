@@ -40,7 +40,8 @@
 
 - hosts: cluster
   roles:
-    - vicenteg.mapr_nfs
+    - { role: vicenteg.mapr_nfs, when: nfs_enabled is defined and nfs_enabled == True }
+    - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
 
 - hosts: fileserver
   roles:
@@ -179,7 +180,7 @@
 - hosts: opentsdb
   sudo: yes
   roles:
-    - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: vicenteg.mapr_maprlogin_service, mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
     - { role: vicenteg.mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster
@@ -193,7 +194,12 @@
 - hosts: edge
   roles:
     - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
-    - { role: vicenteg.mapr_loopbacknfs, when loopbacknfs_enabled is defined and loopbacknfs_enabled }
+    - { role: vicenteg.mapr_loopbacknfs, when: loopbacknfs_enabled is defined and loopbacknfs_enabled }
+    - { role: vicenteg.mapr_posixclient, when: posix_client_enabled is defined and posix_client_enabled }
+  tasks:
+    - name: restart posix client
+      sudo_user: root
+      service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
 
 - hosts: edge;cluster
   sudo_user: mapr

@@ -242,3 +242,6 @@
 [submodule "roles/vicenteg.mesosphere-mesos"]
 	path = roles/vicenteg.mesosphere-mesos
 	url = https://github.com/vicenteg/ansible-mesosphere-mesos.git
+[submodule "roles/vicenteg.mapr_posixclient"]
+	path = roles/vicenteg.mapr_posixclient
+	url = https://github.com/vicenteg/ansible-mapr_posixclient.git

@@ -38,14 +38,14 @@
   roles:
     - vicenteg.mapr_webserver
 
+- hosts: fileserver
+  roles:
+    - vicenteg.mapr_fileserver
+
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_nfs, when: nfs_enabled is defined and nfs_enabled == True }
     - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
-
-- hosts: fileserver
-  roles:
-    - vicenteg.mapr_fileserver
 
 - hosts: mesosmaster
   sudo_user: root

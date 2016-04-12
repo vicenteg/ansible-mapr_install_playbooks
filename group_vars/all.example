@@ -1,5 +1,5 @@
 # Set the cluster name. A real DNS name is good.
-cluster_name: logstash
+cluster_name: telco2.mapr.com
 
 # MCS webserver. Leave this alone unless you have special needs.
 mapr_webserver: https://{{groups["webserver"][0]}}:8443
@@ -31,15 +31,15 @@ mirror_host: package.mapr.com
 mapr_version: v5.1.0
 
 # Optionally provide a license key file here.
-license_file:
+license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
 
 # Configure security, or not. Do it!
-secure_cluster: True
+secure_cluster: False
 
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides no instance store volumes. Volumes are
 # specified below, with the region information.
-mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
+mapr_disks: [ "/dev/xvdf","/dev/xvdg","/dev/xvdh" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
@@ -58,8 +58,14 @@ ntp_config_server:
 # as these playbooks make no attempt to validate compatibility.
 # OpenTSDB, Solr and Kafka are not packaged by MapR.
 
-# loopbacknfs
-loopbacknfs_enabled: True
+# NFS server
+nfs_enabled: False
+
+# posix
+posix_client_enabled: True
+posix_client_fuse_enabled: True
+posix_ticketfile: /tmp/maprticket_2147483632
+posix_client_edition: basic
 
 # Mesos and Myriad
 mesos_enabled: False
@@ -91,12 +97,12 @@ pig_version: 0.14
 pig_build: 201509021826-1
 
 # Apache Spark
-spark_enabled: False
+spark_enabled: True
 spark_version: 1.5.2
-spark_build: 201602261506-1
+spark_build: 201604040801-1
 
 # OpenTSDB
-opentsdb_enabled: False
+opentsdb_enabled: True
 
 # Apache Solr
 solr_enabled: False
@@ -107,9 +113,9 @@ hbase_enabled: False
 hbase_version: 0.98.12
 hbase_build: "201603011130-1"
 
-drill_enabled: False
-drill_version: 1.4.0
-drill_build: "201601071151-1"
+drill_enabled: True
+drill_version: 1.6.0
+drill_build: "201603302146-1"
 
 impala_enabled: False
 
@@ -149,14 +155,17 @@ ec2_regions:
     cluster_node_volumes:
       - device_name: /dev/xvdf
         delete_on_termination: True
-        volume_size: 60
+        volume_size: 100
       - device_name: /dev/xvdg
         delete_on_termination: True
-        volume_size: 60
-    edge_node_type: m4.xlarge
+        volume_size: 100
+      - device_name: /dev/xvdh
+        delete_on_termination: True
+        volume_size: 100
+    edge_node_type: m4.2xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
-    edge_node_count: 0
+    edge_node_count: 1
     edge_node_price:
     # Create EBS volumes. Example below is for creating a 20GB volume that
     # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.

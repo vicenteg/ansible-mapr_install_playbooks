@@ -45,7 +45,8 @@
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_nfs, when: nfs_enabled is defined and nfs_enabled == True }
-    - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
+    - { role: vicenteg.mapr_posixclient,
+          when: mapr_version.startswith("v5.1") and nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
 
 - hosts: mesosmaster
   sudo_user: root
@@ -67,9 +68,12 @@
     - { role: vicenteg.mapr_myriad, when: mesos_enabled is defined and mesos_enabled == True and myriad_enabled == True }
 
 
-- hosts: cluster
+- hosts: hbasemaster
   roles:
     - { role: vicenteg.mapr_hbasemaster, when: hbase_enabled }
+
+- hosts: regionserver
+  roles:
     - { role: vicenteg.mapr_hbaseregionserver, when: hbase_enabled }
 
 - hosts: edge
@@ -126,6 +130,11 @@
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_license, when: license_file is defined and license_file != '' }
+
+- hosts: regionserver
+  roles:
+    - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
+    - { role: vicenteg.mapr_hbaseindexer, when: hbase_enabled and hbase_indexer_enabled }
 
 - hosts: mesosmaster
   roles:
@@ -195,11 +204,12 @@
   roles:
     - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
     - { role: vicenteg.mapr_loopbacknfs, when: loopbacknfs_enabled is defined and loopbacknfs_enabled }
-    - { role: vicenteg.mapr_posixclient, when: posix_client_enabled is defined and posix_client_enabled }
+    - { role: vicenteg.mapr_posixclient, when: mapr_version.startswith("v5.1") and  posix_client_enabled is defined and posix_client_enabled }
   tasks:
     - name: restart posix client
       sudo_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
+      when: mapr_version.startswith("v5.1") and  posix_client_enabled is defined and posix_client_enabled
 
 - hosts: edge;cluster
   sudo_user: mapr

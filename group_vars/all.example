@@ -1,5 +1,5 @@
 # Set the cluster name. A real DNS name is good.
-cluster_name: telco2.mapr.com
+cluster_name: mapr.example.com
 
 # MCS webserver. Leave this alone unless you have special needs.
 mapr_webserver: https://{{groups["webserver"][0]}}:8443
@@ -34,7 +34,7 @@ mapr_version: v5.1.0
 license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
 
 # Configure security, or not. Do it!
-secure_cluster: False
+secure_cluster: True
 
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides no instance store volumes. Volumes are

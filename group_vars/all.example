@@ -85,7 +85,7 @@ classic_enabled: False
 # Apache Hive
 hive_enabled: False
 hive_version: "1.2"
-hive_build: "201601281422"
+hive_build: "201604040723-1"
 # MySQL credentials for hivemeta, hue
 # Password is in clear text (see ansible-vault if you wish to encrypt this file)
 mysql_root_user: root

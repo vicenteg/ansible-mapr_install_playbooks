@@ -10,3 +10,8 @@
         instance_ids: [ "{{instance_id}}" ]
       when: instance_id is defined
       with_dict: ec2_regions
+
+    - name: wait for them to come up
+      local_action: wait_for port=8443 host={{item}}
+      with_items: '{{groups["webserver"]}}'
+      run_once: yes

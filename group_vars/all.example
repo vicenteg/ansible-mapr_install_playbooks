@@ -31,7 +31,7 @@ mirror_host: package.mapr.com
 mapr_version: v5.1.0
 
 # Optionally provide a license key file here.
-license_file: /var/lib/jenkins/jobs/latest_m7_license/workspace/LatestDemoLicense-M7.txt
+license_file:
 
 # Configure security, or not. Do it!
 secure_cluster: True
@@ -43,14 +43,15 @@ mapr_disks: [ "/dev/xvdf","/dev/xvdg","/dev/xvdh" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
-#ntp_config_server:
-#  - 0.pool.ntp.org
-#  - 1.pool.ntp.org
-#  - 2.pool.ntp.org
-#  - 3.pool.ntp.org
 ntp_config_server:
-  - 172.16.1.58
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+#ntp_config_server:
+#  - 172.16.1.58
 
+timezone: "America/New_York"
 
 # Choose your ecosystem components. Note that you need to choose the
 # version and build based on what's available in MapR packages.
@@ -83,7 +84,7 @@ yarn_enabled:  True
 classic_enabled: False
 
 # Apache Hive
-hive_enabled: False
+hive_enabled: True
 hive_version: "1.2"
 hive_build: "201604040723-1"
 # MySQL credentials for hivemeta, hue
@@ -92,9 +93,9 @@ mysql_root_user: root
 mysql_root_password: mapr
 
 # Apache Pig
-pig_enabled: False
-pig_version: 0.14
-pig_build: 201509021826-1
+pig_enabled: True
+pig_version: 0.15
+pig_build: 201603241057-1
 
 # Apache Spark
 spark_enabled: True
@@ -120,17 +121,17 @@ drill_build: "201603302146-1"
 impala_enabled: False
 
 # Apache Oozie
-oozie_enabled: False
+oozie_enabled: True
 oozie_version: 4.2.0
 oozie_build: "201603011312-1"
 
 # HTTPFS
-httpfs_enabled: False
+httpfs_enabled: True
 httpfs_version: 1.0
 httpfs_build: "201505061449-1"
 
 # Hue
-hue_enabled: False
+hue_enabled: True
 hue_version: 3.9.0
 hue_build: 201511191616-1
 
@@ -153,22 +154,22 @@ ec2_regions:
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
     cluster_node_volumes:
+      - device_name: /dev/xvdb
+        delete_on_termination: True
+        volume_size: 128
       - device_name: /dev/xvdf
         delete_on_termination: True
-        volume_size: 100
+        volume_size: 60
       - device_name: /dev/xvdg
         delete_on_termination: True
-        volume_size: 100
+        volume_size: 60
       - device_name: /dev/xvdh
         delete_on_termination: True
-        volume_size: 100
+        volume_size: 60
     edge_node_type: m4.2xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
-    edge_node_count: 1
-    edge_node_price:
-    # Create EBS volumes. Example below is for creating a 20GB volume that
-    # could be mounted on /opt/mapr, and a 72GB volume to be used for MFS.
+    edge_node_count: 0
     edge_node_volumes:
       - device_name: /dev/xvdb
         volume_size: 20
@@ -187,9 +188,10 @@ ec2_regions:
     placement_group:
 
 # Set up your HTTP proxy, if needed.
-proxy_env:
-  http_proxy: http://172.16.1.58:3128
-  https_proxy: http://172.16.1.58:3128
+proxy_env: { }
+#proxy_env:
+#  http_proxy: http://172.16.1.58:3128
+#  https_proxy: http://172.16.1.58:3128
 
 # Skip the tests, if you dare.
 skip_tests: False

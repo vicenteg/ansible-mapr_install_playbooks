@@ -245,3 +245,6 @@
 [submodule "roles/vicenteg.mapr_posixclient"]
 	path = roles/vicenteg.mapr_posixclient
 	url = https://github.com/vicenteg/ansible-mapr_posixclient.git
+[submodule "roles/vicenteg.redhat_timezone"]
+	path = roles/vicenteg.redhat_timezone
+	url = git@github.com:vicenteg/ansible-redhat_timezone.git

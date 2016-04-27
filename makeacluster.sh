@@ -11,8 +11,13 @@ fi
 
 time (
 	if ! test -f "inventory.py" || ! ansible -i inventory.py -u $user -m ping all; then
+		echo -n "Press CTRL-C within 5 seconds if you don't want new instances..."
+		sleep 5
+		echo
+
 		ansible-playbook $VAULT_PASS_OPT mapr_aws_bootstrap.yml || exit 1
 		ansible-playbook -i inventory.py -u $user wait.yml || exit 1
+		ansible-playbook -i inventory.py -u $user opt_mapr.yml || exit 1
 
 		# CentOS 6 HVM AMI housekeeping
 		# Wait a bit for cloudinit to finish (presumably)
@@ -22,4 +27,5 @@ time (
 
 	ansible-playbook -i inventory.py -u $user wait.yml
 	ansible-playbook -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml
+	./printurls.sh
 )

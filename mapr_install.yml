@@ -3,8 +3,8 @@
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_accounts }
-    #- { role: vicenteg.mapr_external_packages, tags: external, when: ansible_os_family == 'RedHat' }
     - { role: vicenteg.mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
+    - { role: vicenteg.redhat_timezone, when: ansible_os_family == 'RedHat' }
     - { role: vicenteg.mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
     - { role: vicenteg.ntp }
     - { role: vicenteg.python_lxml }
@@ -175,17 +175,17 @@
 - hosts: cluster
   sudo: yes
   roles:
-    - { role: vicenteg.user_account, user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.user_account, tags: [ "opentsdb" ], user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: opentsdb
   sudo: yes
   roles:
-    - { role: vicenteg.mapr_maprlogin_service, mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
-    - { role: vicenteg.mapr_opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.mapr_maprlogin_service, tags: [ "opentsdb" ], mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
+    - { role: vicenteg.mapr_opentsdb, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: cluster
   roles:
-    - { role: vicenteg.mapr_tcollector, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+    - { role: vicenteg.mapr_tcollector, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: kafka
   roles:

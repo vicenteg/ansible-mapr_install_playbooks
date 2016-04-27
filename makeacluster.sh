@@ -25,7 +25,7 @@ time (
 		ansible -i inventory.py -su $user -m mount -a "src=/dev/xvdf name=/media/ephemeral0 state=absent fstype=ext3" all
 	fi
 
-	ansible-playbook -i inventory.py -u $user wait.yml
-	ansible-playbook -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml
-	./printurls.sh
+	ansible-playbook -i inventory.py -u $user wait.yml && \
+		ansible-playbook -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml && \
+		./printurls.sh
 )

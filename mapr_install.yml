@@ -80,6 +80,20 @@
   roles:
     - { role: vicenteg.mapr_configuration, tags: configuration }
 
+- hosts: mesosslave
+  tasks:
+    - name: myriad - comment out YARN_NODEMANAGER_OPTS for secure clusters
+      sudo_user: root
+      lineinfile: dest=/opt/mapr/myriad/myriad-{{myriad_version}}/conf/myriad-config-default.yml line="#\1YARN_NODEMANAGER_OPTS:\3" regexp="^(\s+)YARN_NODEMANAGER_OPTS\s*:(.*)" backrefs=true
+      when: secure_cluster is defined and secure_cluster
+
+    - name: myriad - comment out envSettings for secure clusters
+      sudo_user: root
+      lineinfile: dest=/opt/mapr/myriad/myriad-{{myriad_version}}/conf/myriad-config-default.yml line="#\1envSettings:\3" regexp="^(\s+)envSettings\s*:(.*)" backrefs=true
+      when: secure_cluster is defined and secure_cluster
+
+
+
 - hosts: zookeeper
   roles:
     - { role: vicenteg.mapr_zookeeper_startup }

@@ -248,3 +248,6 @@
 [submodule "roles/vicenteg.redhat_timezone"]
 	path = roles/vicenteg.redhat_timezone
 	url = git@github.com:vicenteg/ansible-redhat_timezone.git
+[submodule "callback_plugins"]
+	path = callback_plugins
+	url = git@github.com:vicenteg/ansible-callback_plugin_json.git

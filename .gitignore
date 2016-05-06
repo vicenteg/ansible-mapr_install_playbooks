@@ -8,3 +8,4 @@ vars/global/main.yml
 test_results/
 inventory.py
 group_vars/all
+*.pyc

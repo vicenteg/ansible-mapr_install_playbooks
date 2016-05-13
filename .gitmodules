@@ -251,3 +251,6 @@
 [submodule "callback_plugins"]
 	path = callback_plugins
 	url = git@github.com:vicenteg/ansible-callback_plugin_json.git
+[submodule "roles/vicenteg.mariadb"]
+	path = roles/vicenteg.mariadb
+	url = git@github.com:vicenteg/ansible-mariadb.git

@@ -39,7 +39,7 @@ secure_cluster: True
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides no instance store volumes. Volumes are
 # specified below, with the region information.
-mapr_disks: [ "/dev/xvdf","/dev/xvdg","/dev/xvdh" ]
+mapr_disks: [ "/dev/xvdf" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
@@ -80,7 +80,7 @@ myriad_frameworks:
     rm_name: framework1-rm
 
 # YARN and/or classic MapReduce
-yarn_enabled:  True
+yarn_enabled: True
 classic_enabled: False
 
 # Apache Hive
@@ -99,8 +99,8 @@ pig_build: 201603241057-1
 
 # Apache Spark
 spark_enabled: True
-spark_version: 1.5.2
-spark_build: 201604040801-1
+spark_version: 1.6.1
+spark_build: 201605031407-1
 
 # OpenTSDB
 opentsdb_enabled: True
@@ -156,16 +156,11 @@ ec2_regions:
     cluster_node_volumes:
       - device_name: /dev/xvdb
         delete_on_termination: True
-        volume_size: 128
+        volume_size: 50
       - device_name: /dev/xvdf
         delete_on_termination: True
-        volume_size: 60
-      - device_name: /dev/xvdg
-        delete_on_termination: True
-        volume_size: 60
-      - device_name: /dev/xvdh
-        delete_on_termination: True
-        volume_size: 60
+        volume_size: 500
+        volume_type: st1
     edge_node_type: m4.2xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
@@ -180,8 +175,9 @@ ec2_regions:
       - ssh-only
       - vpc-internal
     vpc_subnet: subnet-8f999ba7
-    image: ami-1ecae776 # Amazon Linux HVM, us-east-1
-    #image: ami-57cd8732
+    #image: ami-1ecae776 # Amazon Linux HVM, us-east-1
+    #image: ami-57cd8732 # CentOS 6, us-east-1
+    image: ami-6d1c2007 # Centos 7
     assign_public_ip: no
     instance_tags:
       Name: '{{cluster_name}}'

@@ -76,6 +76,14 @@
   roles:
     - { role: vicenteg.mapr_client }
 
+- hosts: cluster
+  tasks:
+    - name: install mapr-patch
+      become: true
+      become_user: root
+      yum: name=mapr-patch state=present
+      environment: '{{proxy_env}}'
+
 - hosts: all
   roles:
     - { role: vicenteg.mapr_configuration, tags: configuration }

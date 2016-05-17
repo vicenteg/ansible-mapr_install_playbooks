@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#user=centos
-user=ec2-user
+user=centos
+#user=ec2-user
 mount=/media/ephemeral0
 vault_password_file="vault_pass"
 
@@ -17,12 +17,12 @@ time (
 
 		ansible-playbook $VAULT_PASS_OPT mapr_aws_bootstrap.yml || exit 1
 		ansible-playbook -i inventory.py -u $user wait.yml || exit 1
-		ansible-playbook -i inventory.py -u $user opt_mapr.yml || exit 1
 
-		# CentOS 6 HVM AMI housekeeping
+		# CentOS 6/7 HVM AMI housekeeping
 		# Wait a bit for cloudinit to finish (presumably)
-		sleep 10
+		sleep 15
 		ansible -i inventory.py -su $user -m mount -a "src=/dev/xvdf name=/media/ephemeral0 state=absent fstype=ext3" all
+		ansible-playbook -i inventory.py -u $user opt_mapr.yml || exit 1
 	fi
 
 	ansible-playbook -i inventory.py -u $user wait.yml && \

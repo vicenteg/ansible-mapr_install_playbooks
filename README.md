@@ -16,7 +16,7 @@ cp group_vars/all.example group_vars/all
 Having edited `group_vars/all`, you can create a cluster in AWS EC2 by running:
 
 ```
-./makeacluster
+./makeacluster.sh
 ```
 
 Or you can inspect the playbooks and roles and execute them as you like. For example, if you have your AWS credentials set up:

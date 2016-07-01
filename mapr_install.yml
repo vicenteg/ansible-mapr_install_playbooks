@@ -49,19 +49,22 @@
     - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
 
 - hosts: mesosmaster
-  sudo_user: root
+  become: yes
+  become_user: root
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_mesos_master, when: mesos_enabled is defined and mesos_enabled == True }
 
 - hosts: mesosmaster[0]
-  sudo_user: root
+  become: yes
+  become_user: root
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_mesos_dns, when: mesos_enabled is defined and mesos_enabled == True }
 
 - hosts: mesosslave
-  sudo_user: root
+  become: yes
+  become_user: root
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_mesos_slave, when: mesos_enabled is defined and mesos_enabled == True }
@@ -81,6 +84,7 @@
   tasks:
     - name: install mapr-patch
       become: true
+      become: yes
       become_user: root
       yum: name=mapr-patch state=present
       environment: '{{proxy_env}}'
@@ -96,12 +100,14 @@
 - hosts: cluster
   tasks:
     - name: tune MFS memory if memory is low
-      sudo_user: root
+      become: yes
+      become_user: root
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.percent line=service.command.mfs.heapsize.percent=20 backup=yes
       when: ansible_memtotal_mb < 16384
 
     - name: tune MFS memory if memory is low
-      sudo_user: root
+      become: yes
+      become_user: root
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.maxpercent=65 backup=yes
       when: ansible_memtotal_mb < 16384
 
@@ -110,8 +116,8 @@
     - { role: vicenteg.mapr_cldb_startup }
 
 - hosts: cldb[0]
-  sudo: yes
-  sudo_user: mapr
+  become: yes
+  become_user: mapr
   roles:
     - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
   tasks:
@@ -171,23 +177,23 @@
     - { role: vicenteg.mapr_drill_test, tags: [ "test" ], when: drill_enabled is defined and drill_enabled == True }
 
 - hosts: spark_master
-  sudo: yes
+  become: yes
   roles:
     - { role: vicenteg.mapr_spark_master, when: spark_enabled is defined and spark_enabled and yarn_enabled is defined and yarn_enabled == False }
 
 - hosts: spark_slave
-  sudo: yes
+  become: yes
   roles:
     - { role: vicenteg.mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
     - { role: vicenteg.mapr_spark_test, tags: [ "test" ], when: spark_enabled is defined and spark_enabled and skip_tests == False }
 
 - hosts: cluster
-  sudo: yes
+  become: yes
   roles:
     - { role: vicenteg.user_account, tags: [ "opentsdb" ], user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
 
 - hosts: opentsdb
-  sudo: yes
+  become: yes
   roles:
     - { role: vicenteg.mapr_maprlogin_service, tags: [ "opentsdb" ], mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
     - { role: vicenteg.mapr_opentsdb, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
@@ -207,10 +213,12 @@
     - { role: vicenteg.mapr_posixclient, when: posix_client_enabled is defined and posix_client_enabled }
   tasks:
     - name: restart posix client
-      sudo_user: root
+      become: yes
+      become_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
 
 - hosts: edge;cluster
-  sudo_user: mapr
+  become: yes
+  become_user: mapr
   roles:
     - { role: vicenteg.mapr_post_install_test, tags: [ "test" ], when: skip_tests is defined and skip_tests == False }

@@ -83,7 +83,6 @@
 - hosts: cluster
   tasks:
     - name: install mapr-patch
-      become: true
       become: yes
       become_user: root
       yum: name=mapr-patch state=present

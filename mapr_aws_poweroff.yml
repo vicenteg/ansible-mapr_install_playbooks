@@ -9,4 +9,4 @@
         state: 'stopped'
         instance_ids: [ "{{instance_id}}" ]
       when: instance_id is defined
-      with_dict: ec2_regions
+      with_dict: '{{ec2_regions}}'

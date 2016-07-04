@@ -3,5 +3,5 @@
   tasks:
     - name: wait for them to come up
       local_action: wait_for port=22 host={{item}}
-      with_items: play_hosts
+      with_items: '{{play_hosts}}'
       run_once: yes

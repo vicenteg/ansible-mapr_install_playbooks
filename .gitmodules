@@ -254,3 +254,9 @@
 [submodule "roles/vicenteg.mariadb"]
 	path = roles/vicenteg.mariadb
 	url = git@github.com:vicenteg/ansible-mariadb.git
+[submodule "roles/validation_prereqs"]
+	path = roles/validation_prereqs
+	url = git@github.com:vicenteg/ansible-mapr_validation_prereqs.git
+[submodule "roles/pre_install_validation"]
+	path = roles/pre_install_validation
+	url = git@github.com:vicenteg/ansible-mapr_validation.git

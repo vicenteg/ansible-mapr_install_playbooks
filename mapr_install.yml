@@ -10,6 +10,13 @@
     - { role: vicenteg.ntp }
     - { role: vicenteg.python_lxml }
 
+- hosts: all
+  max_fail_percentage: 0
+  tags: validation
+  roles:
+    - { role: validation_prereqs }
+    - { role: pre_install_validation }
+
 - hosts: zookeeper
   max_fail_percentage: 0
   roles:
@@ -216,7 +223,7 @@
       become_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
 
-- hosts: edge;cluster
+- hosts: edge:cluster
   become: yes
   become_user: mapr
   roles:

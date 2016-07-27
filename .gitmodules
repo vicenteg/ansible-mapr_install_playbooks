@@ -6,239 +6,239 @@
 	url = https://github.com/picotrading/config-encoder-macros
 [submodule "roles/vicenteg.mapr_accounts"]
 	path = roles/vicenteg.mapr_accounts
-	url = git@github.com:vicenteg/ansible-mapr_accounts
+	url = https://github.com/vicenteg/ansible-mapr_accounts
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_authtest"]
 	path = roles/vicenteg.mapr_authtest
-	url = git@github.com:vicenteg/ansible-mapr_authtest
+	url = https://github.com/vicenteg/ansible-mapr_authtest
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_aws_bootstrap"]
 	path = roles/vicenteg.mapr_aws_bootstrap
-	url = git@github.com:vicenteg/ansible-mapr_aws_bootstrap
+	url = https://github.com/vicenteg/ansible-mapr_aws_bootstrap
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_cldb"]
 	path = roles/vicenteg.mapr_cldb
-	url = git@github.com:vicenteg/ansible-mapr_cldb
+	url = https://github.com/vicenteg/ansible-mapr_cldb
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_cldb_startup"]
 	path = roles/vicenteg.mapr_cldb_startup
-	url = git@github.com:vicenteg/ansible-mapr_cldb_startup
+	url = https://github.com/vicenteg/ansible-mapr_cldb_startup
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_client"]
 	path = roles/vicenteg.mapr_client
-	url = git@github.com:vicenteg/ansible-mapr_client
+	url = https://github.com/vicenteg/ansible-mapr_client
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_cluster_startup"]
 	path = roles/vicenteg.mapr_cluster_startup
-	url = git@github.com:vicenteg/ansible-mapr_cluster_startup
+	url = https://github.com/vicenteg/ansible-mapr_cluster_startup
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_configuration"]
 	path = roles/vicenteg.mapr_configuration
-	url = git@github.com:vicenteg/ansible-mapr_configuration
+	url = https://github.com/vicenteg/ansible-mapr_configuration
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_debian_prereqs"]
 	path = roles/vicenteg.mapr_debian_prereqs
-	url = git@github.com:vicenteg/ansible-mapr_debian_prereqs
+	url = https://github.com/vicenteg/ansible-mapr_debian_prereqs
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_drill"]
 	path = roles/vicenteg.mapr_drill
-	url = git@github.com:vicenteg/ansible-mapr_drill
+	url = https://github.com/vicenteg/ansible-mapr_drill
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_drill_test"]
 	path = roles/vicenteg.mapr_drill_test
-	url = git@github.com:vicenteg/ansible-mapr_drill_test
+	url = https://github.com/vicenteg/ansible-mapr_drill_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_external_packages"]
 	path = roles/vicenteg.mapr_external_packages
-	url = git@github.com:vicenteg/ansible-mapr_external_packages
+	url = https://github.com/vicenteg/ansible-mapr_external_packages
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_fileserver"]
 	path = roles/vicenteg.mapr_fileserver
-	url = git@github.com:vicenteg/ansible-mapr_fileserver
+	url = https://github.com/vicenteg/ansible-mapr_fileserver
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_hbasemaster"]
 	path = roles/vicenteg.mapr_hbasemaster
-	url = git@github.com:vicenteg/ansible-mapr_hbasemaster
+	url = https://github.com/vicenteg/ansible-mapr_hbasemaster
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_hbaseregionserver"]
 	path = roles/vicenteg.mapr_hbaseregionserver
-	url = git@github.com:vicenteg/ansible-mapr_hbaseregionserver
+	url = https://github.com/vicenteg/ansible-mapr_hbaseregionserver
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_historyserver"]
 	path = roles/vicenteg.mapr_historyserver
-	url = git@github.com:vicenteg/ansible-mapr_historyserver
+	url = https://github.com/vicenteg/ansible-mapr_historyserver
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_hive"]
 	path = roles/vicenteg.mapr_hive
-	url = git@github.com:vicenteg/ansible-mapr_hive
+	url = https://github.com/vicenteg/ansible-mapr_hive
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_hive_test"]
 	path = roles/vicenteg.mapr_hive_test
-	url = git@github.com:vicenteg/ansible-mapr_hive_test
+	url = https://github.com/vicenteg/ansible-mapr_hive_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_httpfs"]
 	path = roles/vicenteg.mapr_httpfs
-	url = git@github.com:vicenteg/ansible-mapr_httpfs
+	url = https://github.com/vicenteg/ansible-mapr_httpfs
 	branch = galaxy
 [submodule "roles/vicenteg.mapr-hue"]
 	path = roles/vicenteg.mapr-hue
-	url = git@github.com:vicenteg/mapr-hue
+	url = https://github.com/vicenteg/mapr-hue
 	branch = galaxy
 [submodule "roles/vicenteg.mapr-kafka"]
 	path = roles/vicenteg.mapr-kafka
-	url = git@github.com:vicenteg/mapr-kafka
+	url = https://github.com/vicenteg/mapr-kafka
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_license"]
 	path = roles/vicenteg.mapr_license
-	url = git@github.com:vicenteg/ansible-mapr_license
+	url = https://github.com/vicenteg/ansible-mapr_license
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_loopbacknfs"]
 	path = roles/vicenteg.mapr_loopbacknfs
-	url = git@github.com:vicenteg/ansible-mapr_loopbacknfs
+	url = https://github.com/vicenteg/ansible-mapr_loopbacknfs
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_mapreducev1_test"]
 	path = roles/vicenteg.mapr_mapreducev1_test
-	url = git@github.com:vicenteg/ansible-mapr_mapreducev1_test
+	url = https://github.com/vicenteg/ansible-mapr_mapreducev1_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_maprlogin"]
 	path = roles/vicenteg.mapr_maprlogin
-	url = git@github.com:vicenteg/ansible-mapr_maprlogin
+	url = https://github.com/vicenteg/ansible-mapr_maprlogin
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_maprlogin_service"]
 	path = roles/vicenteg.mapr_maprlogin_service
-	url = git@github.com:vicenteg/ansible-mapr_maprlogin_service
+	url = https://github.com/vicenteg/ansible-mapr_maprlogin_service
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_nfs"]
 	path = roles/vicenteg.mapr_nfs
-	url = git@github.com:vicenteg/ansible-mapr_nfs
+	url = https://github.com/vicenteg/ansible-mapr_nfs
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_nodemanager"]
 	path = roles/vicenteg.mapr_nodemanager
-	url = git@github.com:vicenteg/ansible-mapr_nodemanager
+	url = https://github.com/vicenteg/ansible-mapr_nodemanager
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_oozie"]
 	path = roles/vicenteg.mapr_oozie
-	url = git@github.com:vicenteg/ansible-mapr_oozie
+	url = https://github.com/vicenteg/ansible-mapr_oozie
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_opentsdb"]
 	path = roles/vicenteg.mapr_opentsdb
-	url = git@github.com:vicenteg/ansible-mapr_opentsdb
+	url = https://github.com/vicenteg/ansible-mapr_opentsdb
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_pig"]
 	path = roles/vicenteg.mapr_pig
-	url = git@github.com:vicenteg/ansible-mapr_pig
+	url = https://github.com/vicenteg/ansible-mapr_pig
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_post_install_test"]
 	path = roles/vicenteg.mapr_post_install_test
-	url = git@github.com:vicenteg/ansible-mapr_post_install_test
+	url = https://github.com/vicenteg/ansible-mapr_post_install_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_pre_install_test"]
 	path = roles/vicenteg.mapr_pre_install_test
-	url = git@github.com:vicenteg/ansible-mapr_pre_install_test
+	url = https://github.com/vicenteg/ansible-mapr_pre_install_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_python"]
 	path = roles/vicenteg.mapr_python
-	url = git@github.com:vicenteg/ansible-mapr_python
+	url = https://github.com/vicenteg/ansible-mapr_python
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_redhat_prereqs"]
 	path = roles/vicenteg.mapr_redhat_prereqs
-	url = git@github.com:vicenteg/ansible-mapr_redhat_prereqs
+	url = https://github.com/vicenteg/ansible-mapr_redhat_prereqs
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_resourcemanager"]
 	path = roles/vicenteg.mapr_resourcemanager
-	url = git@github.com:vicenteg/ansible-mapr_resourcemanager
+	url = https://github.com/vicenteg/ansible-mapr_resourcemanager
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_solr"]
 	path = roles/vicenteg.mapr_solr
-	url = git@github.com:vicenteg/ansible-mapr_solr
+	url = https://github.com/vicenteg/ansible-mapr_solr
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_spark_master"]
 	path = roles/vicenteg.mapr_spark_master
-	url = git@github.com:vicenteg/ansible-mapr_spark_master
+	url = https://github.com/vicenteg/ansible-mapr_spark_master
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_spark_slave"]
 	path = roles/vicenteg.mapr_spark_slave
-	url = git@github.com:vicenteg/ansible-mapr_spark_slave
+	url = https://github.com/vicenteg/ansible-mapr_spark_slave
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_spark_test"]
 	path = roles/vicenteg.mapr_spark_test
-	url = git@github.com:vicenteg/ansible-mapr_spark_test
+	url = https://github.com/vicenteg/ansible-mapr_spark_test
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_tcollector"]
 	path = roles/vicenteg.mapr_tcollector
-	url = git@github.com:vicenteg/ansible-mapr_tcollector
+	url = https://github.com/vicenteg/ansible-mapr_tcollector
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_webserver"]
 	path = roles/vicenteg.mapr_webserver
-	url = git@github.com:vicenteg/ansible-mapr_webserver
+	url = https://github.com/vicenteg/ansible-mapr_webserver
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_zookeeper"]
 	path = roles/vicenteg.mapr_zookeeper
-	url = git@github.com:vicenteg/ansible-mapr_zookeeper
+	url = https://github.com/vicenteg/ansible-mapr_zookeeper
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_zookeeper_startup"]
 	path = roles/vicenteg.mapr_zookeeper_startup
-	url = git@github.com:vicenteg/ansible-mapr_zookeeper_startup
+	url = https://github.com/vicenteg/ansible-mapr_zookeeper_startup
 	branch = galaxy
 [submodule "roles/vicenteg.mysql_server"]
 	path = roles/vicenteg.mysql_server
-	url = git@github.com:vicenteg/ansible-mysql_server
+	url = https://github.com/vicenteg/ansible-mysql_server
 	branch = galaxy
 [submodule "roles/vicenteg.ntp"]
 	path = roles/vicenteg.ntp
-	url = git@github.com:vicenteg/ansible-ntp
+	url = https://github.com/vicenteg/ansible-ntp
 	branch = galaxy
 [submodule "roles/vicenteg.python_lxml"]
 	path = roles/vicenteg.python_lxml
-	url = git@github.com:vicenteg/ansible-python_lxml
+	url = https://github.com/vicenteg/ansible-python_lxml
 	branch = galaxy
 [submodule "roles/vicenteg.user_account"]
 	path = roles/vicenteg.user_account
-	url = git@github.com:vicenteg/ansible-user_account
+	url = https://github.com/vicenteg/ansible-user_account
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_jobtracker"]
 	path = roles/vicenteg.mapr_jobtracker
-	url = git@github.com:vicenteg/ansible-mapr_jobtracker
+	url = https://github.com/vicenteg/ansible-mapr_jobtracker
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_mesos"]
 	path = roles/vicenteg.mapr_mesos
-	url = git@github.com:vicenteg/mapr_mesos
+	url = https://github.com/vicenteg/mapr_mesos
 [submodule "roles/vicenteg.mapr_mesos_master"]
 	path = roles/vicenteg.mapr_mesos_master
-	url = git@github.com:vicenteg/mapr_mesos_master
+	url = https://github.com/vicenteg/mapr_mesos_master
 [submodule "roles/vicenteg.mapr_mesos_slave"]
 	path = roles/vicenteg.mapr_mesos_slave
-	url = git@github.com:vicenteg/mapr_mesos_slave
+	url = https://github.com/vicenteg/mapr_mesos_slave
 [submodule "roles/vicenteg.mapr_metrics"]
 	path = roles/vicenteg.mapr_metrics
-	url = git@github.com:vicenteg/ansible-mapr_metrics
+	url = https://github.com/vicenteg/ansible-mapr_metrics
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_metrics_database"]
 	path = roles/vicenteg.mapr_metrics_database
-	url = git@github.com:vicenteg/ansible-mapr_metrics_database
+	url = https://github.com/vicenteg/ansible-mapr_metrics_database
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_myriad"]
 	path = roles/vicenteg.mapr_myriad
-	url = git@github.com:vicenteg/ansible-mapr_myriad
+	url = https://github.com/vicenteg/ansible-mapr_myriad
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_tasktracker"]
 	path = roles/vicenteg.mapr_tasktracker
-	url = git@github.com:vicenteg/ansible-mapr_tasktracker
+	url = https://github.com/vicenteg/ansible-mapr_tasktracker
 	branch = galaxy
 [submodule "roles/vicenteg.mesosphere"]
 	path = roles/vicenteg.mesosphere
-	url = git@github.com:vicenteg/ansible-mesosphere
+	url = https://github.com/vicenteg/ansible-mesosphere
 	branch = galaxy
 [submodule "roles/vicenteg.scala"]
 	path = roles/vicenteg.scala
-	url = git@github.com:vicenteg/ansible-scala
+	url = https://github.com/vicenteg/ansible-scala
 	branch = galaxy
 [submodule "roles/vicenteg.mapr_mesos_dns"]
 	path = roles/vicenteg.mapr_mesos_dns
-	url = git@github.com:vicenteg/mapr_mesos_dns.git
+	url = https://github.com/vicenteg/mapr_mesos_dns.git
 [submodule "roles/vicenteg.mapr_myriad_startup"]
 	path = roles/vicenteg.mapr_myriad_startup
-	url = git@github.com:vicenteg/ansible-mapr_myriad_startup.git
+	url = https://github.com/vicenteg/ansible-mapr_myriad_startup.git
 [submodule "roles/vicenteg.mesosphere-mesos"]
 	path = roles/vicenteg.mesosphere-mesos
 	url = https://github.com/vicenteg/ansible-mesosphere-mesos.git
@@ -247,16 +247,16 @@
 	url = https://github.com/vicenteg/ansible-mapr_posixclient.git
 [submodule "roles/vicenteg.redhat_timezone"]
 	path = roles/vicenteg.redhat_timezone
-	url = git@github.com:vicenteg/ansible-redhat_timezone.git
+	url = https://github.com/vicenteg/ansible-redhat_timezone.git
 [submodule "callback_plugins"]
 	path = callback_plugins
-	url = git@github.com:vicenteg/ansible-callback_plugin_json.git
+	url = https://github.com/vicenteg/ansible-callback_plugin_json.git
 [submodule "roles/vicenteg.mariadb"]
 	path = roles/vicenteg.mariadb
-	url = git@github.com:vicenteg/ansible-mariadb.git
+	url = https://github.com/vicenteg/ansible-mariadb.git
 [submodule "roles/validation_prereqs"]
 	path = roles/validation_prereqs
-	url = git@github.com:vicenteg/ansible-mapr_validation_prereqs.git
+	url = https://github.com/vicenteg/ansible-mapr_validation_prereqs.git
 [submodule "roles/pre_install_validation"]
 	path = roles/pre_install_validation
-	url = git@github.com:vicenteg/ansible-mapr_validation.git
+	url = https://github.com/vicenteg/ansible-mapr_validation.git

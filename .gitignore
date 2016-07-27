@@ -1,3 +1,5 @@
+*.json
+*.retry
 logs/*
 *.log
 .repo/

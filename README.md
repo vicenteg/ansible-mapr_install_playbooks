@@ -5,7 +5,7 @@ This repo contains top level playbooks and git submodules. The submodules mostly
 # Quickstart
 
 ```
-git clone git@github.com:vicenteg/ansible-mapr_install_playbooks.git my_new_cluster
+git clone https://github.com/vicenteg/ansible-mapr_install_playbooks.git my_new_cluster
 cd my_new_cluster
 git submodule init
 git submodule update

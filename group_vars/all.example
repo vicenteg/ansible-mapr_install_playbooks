@@ -1,3 +1,11 @@
+# Validation options
+
+# Perform write test to raw device.
+destructive_tests_ok: False
+
+# Install MapR installer (incompatible with install playbooks)
+install_mapr_installer: False
+
 # Set the cluster name. A real DNS name is good.
 cluster_name: mapr.example.com
 

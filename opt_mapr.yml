@@ -1,7 +1,6 @@
 - hosts: cluster
   tasks:
     - name: format /dev/xvdb is not mounted already
-      become: true
       become: yes
       become_user: root
       command: mkfs.ext4 /dev/xvdb
@@ -9,7 +8,6 @@
       register: format_xvdb
 
     - name: mount /opt if xvdb is defined and not in mapr_disks
-      become: true
       become: yes
       become_user: root
       mount: name=/opt/mapr src=/dev/xvdb fstype=ext4 state=mounted

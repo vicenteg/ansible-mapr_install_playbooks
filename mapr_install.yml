@@ -89,11 +89,18 @@
 
 - hosts: cluster
   tasks:
+    - name: check for mapr-patch package
+      command: yum list  mapr-patch
+      failed_when: yum_list_mapr_patch.rc not in (0,1)
+      changed_when: false
+      register: yum_list_mapr_patch
+
     - name: install mapr-patch
       become: yes
       become_user: root
       yum: name=mapr-patch state=present
       environment: '{{proxy_env}}'
+      when: yum_list_mapr_patch.rc == 0
 
 - hosts: all
   roles:

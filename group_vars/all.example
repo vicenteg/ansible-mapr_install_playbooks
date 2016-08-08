@@ -16,6 +16,8 @@ mapr_webserver: https://{{groups["webserver"][0]}}:8443
 # mapr, and probably does not need to be changed
 # in most environments.
 mapr_admin_username: mapr
+mapr_uid: 2000
+mapr_gid: 2000
 
 # MapR user Password, sha1 crypted (see ansible-vault if you wish to encrypt this file)
 # generate the hash with "openssl passwd -1"
@@ -36,7 +38,7 @@ mirror_host: package.mapr.com
 
 # Choose the MapR version you want.
 # Be sure to include the 'v'.
-mapr_version: v5.1.0
+mapr_version: v5.2.0
 
 # Optionally provide a license key file here.
 license_file:
@@ -65,7 +67,7 @@ timezone: "America/New_York"
 # version and build based on what's available in MapR packages.
 # You should also be careful to observe the compatibility of components
 # as these playbooks make no attempt to validate compatibility.
-# OpenTSDB, Solr and Kafka are not packaged by MapR.
+# Solr and Kafka are not packaged by MapR.
 
 # NFS server
 nfs_enabled: False
@@ -73,7 +75,7 @@ nfs_enabled: False
 # posix
 posix_client_enabled: True
 posix_client_fuse_enabled: True
-posix_ticketfile: /tmp/maprticket_2147483632
+posix_ticketfile: /tmp/maprticket_{{mapr_uid}}
 posix_client_edition: basic
 
 # Mesos and Myriad
@@ -94,7 +96,7 @@ classic_enabled: False
 # Apache Hive
 hive_enabled: True
 hive_version: "1.2"
-hive_build: "201604040723-1"
+hive_build: "*"
 # MySQL credentials for hivemeta, hue
 # Password is in clear text (see ansible-vault if you wish to encrypt this file)
 mysql_root_user: root
@@ -103,15 +105,15 @@ mysql_root_password: mapr
 # Apache Pig
 pig_enabled: True
 pig_version: 0.15
-pig_build: 201603241057-1
+pig_build: "*"
 
 # Apache Spark
 spark_enabled: True
 spark_version: 1.6.1
-spark_build: 201605031407-1
+spark_build: "*"
 
 # OpenTSDB
-opentsdb_enabled: True
+opentsdb_enabled: False
 
 # Apache Solr
 solr_enabled: False
@@ -119,29 +121,29 @@ solr_version: 4.10.3
 
 # Apache HBase
 hbase_enabled: False
-hbase_version: 0.98.12
-hbase_build: "201603011130-1"
+hbase_version: 1.1.1
+hbase_build: "*"
 
-drill_enabled: True
+drill_enabled: False
 drill_version: 1.6.0
-drill_build: "201603302146-1"
+drill_build: "*"
 
 impala_enabled: False
 
 # Apache Oozie
-oozie_enabled: True
+oozie_enabled: False
 oozie_version: 4.2.0
-oozie_build: "201603011312-1"
+oozie_build: "*"
 
 # HTTPFS
-httpfs_enabled: True
+httpfs_enabled: False
 httpfs_version: 1.0
-httpfs_build: "201505061449-1"
+httpfs_build: "*"
 
 # Hue
-hue_enabled: True
+hue_enabled: False
 hue_version: 3.9.0
-hue_build: 201511191616-1
+hue_build: "*"
 
 # Apache Kafka
 kafka_enabled: False
@@ -157,7 +159,7 @@ ec2_regions:
     zone: us-east-1a
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
-    cluster_node_type: m4.2xlarge
+    cluster_node_type: m4.xlarge
     cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
@@ -169,7 +171,7 @@ ec2_regions:
         delete_on_termination: True
         volume_size: 500
         volume_type: st1
-    edge_node_type: m4.2xlarge
+    edge_node_type: m4.xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
     edge_node_count: 0

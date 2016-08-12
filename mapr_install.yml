@@ -28,29 +28,35 @@
     - vicenteg.mapr_cldb
 
 - hosts: resourcemanager
+  tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_resourcemanager, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
 
 - hosts: historyserver
+  tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_historyserver, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
 
 - hosts: nodemanager
+  tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
 
 - hosts: webserver
+  tags: mapr-core
   roles:
     - vicenteg.mapr_webserver
 
 - hosts: fileserver
+  tags: mapr-core
   roles:
     - vicenteg.mapr_fileserver
 
 - hosts: cluster
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_nfs, when: nfs_enabled is defined and nfs_enabled == True }
     - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
@@ -84,10 +90,12 @@
     - { role: vicenteg.mapr_hbaseregionserver, when: hbase_enabled }
 
 - hosts: edge
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_client }
 
 - hosts: cluster
+  tags: mapr-core
   tasks:
     - name: check for mapr-patch package
       command: yum list  mapr-patch
@@ -102,15 +110,46 @@
       environment: '{{proxy_env}}'
       when: yum_list_mapr_patch.rc == 0
 
+- hosts: cluster
+  tags: mapr-core
+  tasks:
+    - name: find hadoop version
+      shell: rpm -qa --queryformat '%{VERSION} %{RELEASE}' mapr-hadoop-core | awk '{ print substr($0,0,5) }'
+      register: hadoop_version
+      changed_when: false
+
+    - name: configure proxyuser groups
+      hadoop_properties:
+        create: True
+        file: /opt/mapr/hadoop/hadoop-{{hadoop_version.stdout}}/etc/hadoop/core-site.xml
+        name: hadoop.proxyuser.mapr.groups
+        value: "*"
+      become: yes
+      become_user: root
+#      when: secure_cluster is defined and secure_cluster == True
+
+    - name: configure proxyuser hosts
+      hadoop_properties:
+        create: True
+        file: /opt/mapr/hadoop/hadoop-{{hadoop_version.stdout}}/etc/hadoop/core-site.xml
+        name: hadoop.proxyuser.mapr.hosts
+        value: "*"
+      become: yes
+      become_user: root
+#      when: secure_cluster is defined and secure_cluster == True
+
 - hosts: all
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_configuration, tags: configuration }
 
 - hosts: zookeeper
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_zookeeper_startup }
 
 - hosts: cluster
+  tags: mapr-core
   tasks:
     - name: tune MFS memory if memory is low
       become: yes
@@ -125,12 +164,14 @@
       when: ansible_memtotal_mb < 16384
 
 - hosts: cldb
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_cldb_startup }
 
 - hosts: cldb[0]
   become: yes
   become_user: mapr
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_maprlogin, when: secure_cluster is defined and secure_cluster == True }
   tasks:
@@ -148,10 +189,12 @@
 
 
 - hosts: cluster
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_cluster_startup }
 
 - hosts: cluster
+  tags: mapr-core
   roles:
     - { role: vicenteg.mapr_license, when: license_file is defined and license_file != '' }
 

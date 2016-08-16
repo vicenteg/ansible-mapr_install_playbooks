@@ -103,12 +103,12 @@ mysql_root_password: mapr
 # Apache Pig
 pig_enabled: True
 pig_version: 0.15
-pig_build: 201603241057-1
+pig_build: 201607281405-1
 
 # Apache Spark
 spark_enabled: True
 spark_version: 1.6.1
-spark_build: 201605031407-1
+spark_build: 201607242143-1
 
 # OpenTSDB
 opentsdb_enabled: True
@@ -119,29 +119,29 @@ solr_version: 4.10.3
 
 # Apache HBase
 hbase_enabled: False
-hbase_version: 0.98.12
-hbase_build: "201603011130-1"
+hbase_version: 1.1.1
+hbase_build: "201602221251-1"
 
 drill_enabled: True
 drill_version: 1.6.0
-drill_build: "201603302146-1"
+drill_build: "201606241408-1"
 
 impala_enabled: False
 
 # Apache Oozie
 oozie_enabled: True
 oozie_version: 4.2.0
-oozie_build: "201603011312-1"
+oozie_build: "201607281407-1"
 
 # HTTPFS
 httpfs_enabled: True
 httpfs_version: 1.0
-httpfs_build: "201505061449-1"
+httpfs_build: "201606271250-1"
 
 # Hue
 hue_enabled: True
 hue_version: 3.9.0
-hue_build: 201511191616-1
+hue_build: "201607121533-1"
 
 # Apache Kafka
 kafka_enabled: False

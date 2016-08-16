@@ -12,6 +12,6 @@
       with_dict: '{{ec2_regions}}'
 
     - name: wait for them to come up
-      local_action: wait_for port=8443 host={{item}}
-      with_items: '{{groups["webserver"]}}'
+      local_action: wait_for port=22 host={{item}}
+      with_items: '{{groups["all"]}}'
       run_once: yes

@@ -38,7 +38,7 @@ mirror_host: package.mapr.com
 
 # Choose the MapR version you want.
 # Be sure to include the 'v'.
-mapr_version: v5.2.0
+mapr_version: v5.1.0
 
 # Optionally provide a license key file here.
 license_file:
@@ -49,7 +49,7 @@ secure_cluster: True
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides no instance store volumes. Volumes are
 # specified below, with the region information.
-mapr_disks: [ "/dev/xvdf" ]
+mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
@@ -79,11 +79,13 @@ posix_ticketfile: /tmp/maprticket_{{mapr_uid}}
 posix_client_edition: basic
 
 # Mesos and Myriad
-mesos_enabled: False
+mesos_enabled: True
 mesos_dns_resolvers: '[ "172.16.0.2" ]'
 
 # Apache Myriad
-myriad_enabled: False
+myriad_enabled: True
+myriad_version: "0.1"
+myriad_build: "*"
 myriad_frameworks:
   framework1:
     name: framework1
@@ -113,7 +115,7 @@ spark_version: 1.6.1
 spark_build: "*"
 
 # OpenTSDB
-opentsdb_enabled: False
+opentsdb_enabled: True
 
 # Apache Solr
 solr_enabled: False
@@ -124,7 +126,7 @@ hbase_enabled: False
 hbase_version: 1.1.1
 hbase_build: "*"
 
-drill_enabled: False
+drill_enabled: True
 drill_version: 1.6.0
 drill_build: "*"
 
@@ -159,7 +161,7 @@ ec2_regions:
     zone: us-east-1a
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
-    cluster_node_type: m4.xlarge
+    cluster_node_type: m4.4xlarge
     cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
@@ -168,6 +170,10 @@ ec2_regions:
         delete_on_termination: True
         volume_size: 50
       - device_name: /dev/xvdf
+        delete_on_termination: True
+        volume_size: 500
+        volume_type: st1
+      - device_name: /dev/xvdg
         delete_on_termination: True
         volume_size: 500
         volume_type: st1

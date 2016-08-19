@@ -67,12 +67,6 @@
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_mesos_master, when: mesos_enabled is defined and mesos_enabled == True }
-
-- hosts: mesosmaster[0]
-  become: yes
-  become_user: root
-  max_fail_percentage: 0
-  roles:
     - { role: vicenteg.mapr_mesos_dns, when: mesos_enabled is defined and mesos_enabled == True }
 
 - hosts: mesosslave

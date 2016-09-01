@@ -88,21 +88,49 @@
   roles:
     - { role: vicenteg.mapr_client }
 
-- hosts: cluster
+- hosts: edge
   tags: mapr-core
   tasks:
+    - name: check for maprpatch repo
+      command: yum repolist maprpatch
+      failed_when: false
+      register: maprpatch_exists
+
     - name: check for mapr-patch package
       command: yum list  mapr-patch
       failed_when: yum_list_mapr_patch.rc not in (0,1)
       changed_when: false
       register: yum_list_mapr_patch
+      when: maprpatch_exists.rc == 0
+
+    - name: install mapr-patch
+      become: yes
+      become_user: root
+      yum: name=mapr-patch-client state=present
+      environment: '{{proxy_env}}'
+      when: maprpatch_exists.rc == 0 and yum_list_mapr_patch.rc == 0
+
+- hosts: cluster
+  tags: mapr-core
+  tasks:
+    - name: check for maprpatch repo
+      command: yum repolist maprpatch
+      failed_when: false
+      register: maprpatch_exists
+
+    - name: check for mapr-patch package
+      command: yum list  mapr-patch
+      failed_when: yum_list_mapr_patch.rc not in (0,1)
+      changed_when: false
+      register: yum_list_mapr_patch
+      when: maprpatch_exists.rc == 0
 
     - name: install mapr-patch
       become: yes
       become_user: root
       yum: name=mapr-patch state=present
       environment: '{{proxy_env}}'
-      when: yum_list_mapr_patch.rc == 0
+      when: maprpatch_exists.rc == 0 and yum_list_mapr_patch.rc == 0
 
 - hosts: cluster
   tags: mapr-core

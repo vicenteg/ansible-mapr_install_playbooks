@@ -195,8 +195,6 @@ ec2_regions:
     #image: ami-57cd8732 # CentOS 6, us-east-1
     image: ami-6d1c2007 # Centos 7
     assign_public_ip: no
-    instance_tags:
-      Name: '{{cluster_name}}'
     placement_group:
 
 # Set up your HTTP proxy, if needed.

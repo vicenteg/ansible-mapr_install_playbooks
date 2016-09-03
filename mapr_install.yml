@@ -9,6 +9,7 @@
     - { role: vicenteg.mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
     - { role: vicenteg.ntp }
     - { role: vicenteg.python_lxml }
+    - { role: vicenteg.mapr_external_packages }
 
 - hosts: all
   max_fail_percentage: 0

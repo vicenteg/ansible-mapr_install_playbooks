@@ -260,3 +260,6 @@
 [submodule "roles/pre_install_validation"]
 	path = roles/pre_install_validation
 	url = https://github.com/vicenteg/ansible-mapr_validation.git
+[submodule "roles/oracle_java"]
+	path = roles/oracle_java
+	url = https://github.com/William-Yeh/ansible-oracle-java.git

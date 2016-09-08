@@ -1,9 +1,12 @@
 
 - hosts: all
+  become: yes
+  become_user: root
   max_fail_percentage: 0
   tags: preinstall
   roles:
     - { role: vicenteg.mapr_accounts }
+    - { role: oracle_java, when: use_openjdk is not defined or use_openjdk == False, java_version: 8, java_subversion: 102 }
     - { role: vicenteg.mapr_redhat_prereqs, when: ansible_os_family == 'RedHat' }
     - { role: vicenteg.redhat_timezone, when: ansible_os_family == 'RedHat' }
     - { role: vicenteg.mapr_debian_prereqs, when: ansible_os_family == 'Debian' }
@@ -164,7 +167,7 @@
 - hosts: all
   tags: mapr-core
   roles:
-    - { role: vicenteg.mapr_configuration, tags: configuration }
+    - { role: vicenteg.mapr_configuration, tags: configuration, java_home: /usr/java/default }
 
 - hosts: zookeeper
   tags: mapr-core

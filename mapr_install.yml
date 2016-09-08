@@ -17,6 +17,7 @@
     - { role: vicenteg.ntp }
     - { role: vicenteg.python_lxml }
     - { role: vicenteg.mapr_external_packages }
+  environment: '{{proxy_env}}'
 
 - hosts: all
   max_fail_percentage: 0
@@ -24,50 +25,59 @@
   roles:
     - { role: validation_prereqs }
     - { role: pre_install_validation }
+  environment: '{{proxy_env}}'
 
 - hosts: zookeeper
   max_fail_percentage: 0
   roles:
     - vicenteg.mapr_zookeeper
+  environment: '{{proxy_env}}'
 
 - hosts: cldb
   max_fail_percentage: 0
   roles:
     - vicenteg.mapr_cldb
+  environment: '{{proxy_env}}'
 
 - hosts: resourcemanager
   tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_resourcemanager, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
+  environment: '{{proxy_env}}'
 
 - hosts: historyserver
   tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_historyserver, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
+  environment: '{{proxy_env}}'
 
 - hosts: nodemanager
   tags: mapr-core
   max_fail_percentage: 0
   roles:
     - { role: vicenteg.mapr_nodemanager, when: yarn_enabled is defined and yarn_enabled == True and myriad_enabled != True }
+  environment: '{{proxy_env}}'
 
 - hosts: webserver
   tags: mapr-core
   roles:
     - vicenteg.mapr_webserver
+  environment: '{{proxy_env}}'
 
 - hosts: fileserver
   tags: mapr-core
   roles:
     - vicenteg.mapr_fileserver
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   tags: mapr-core
   roles:
     - { role: vicenteg.mapr_nfs, when: nfs_enabled is defined and nfs_enabled == True }
     - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: mesosmaster
   become: yes
@@ -76,6 +86,7 @@
   roles:
     - { role: vicenteg.mapr_mesos_master, when: mesos_enabled is defined and mesos_enabled == True }
     - { role: vicenteg.mapr_mesos_dns, when: mesos_enabled is defined and mesos_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: mesosslave
   become: yes
@@ -84,20 +95,24 @@
   roles:
     - { role: vicenteg.mapr_mesos_slave, when: mesos_enabled is defined and mesos_enabled == True }
     - { role: vicenteg.mapr_myriad, when: mesos_enabled is defined and mesos_enabled == True and myriad_enabled == True }
+  environment: '{{proxy_env}}'
 
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_hbasemaster, when: hbase_enabled }
     - { role: vicenteg.mapr_hbaseregionserver, when: hbase_enabled }
+  environment: '{{proxy_env}}'
 
 - hosts: edge
   tags: mapr-core
   roles:
     - { role: vicenteg.mapr_client }
+  environment: '{{proxy_env}}'
 
 - hosts: edge
   tags: mapr-core
+  environment: '{{proxy_env}}'
   tasks:
     - name: check for maprpatch repo
       command: yum repolist maprpatch
@@ -120,6 +135,7 @@
 
 - hosts: cluster
   tags: mapr-core
+  environment: '{{proxy_env}}'
   tasks:
     - name: check for maprpatch repo
       command: yum repolist maprpatch
@@ -142,6 +158,7 @@
 
 - hosts: cluster
   tags: mapr-core
+  environment: '{{proxy_env}}'
   tasks:
     - name: find hadoop version
       shell: rpm -qa --queryformat '%{VERSION} %{RELEASE}' mapr-hadoop-core | awk '{ print substr($0,0,5) }'
@@ -235,59 +252,72 @@
 - hosts: hiveserver
   roles:
     - { role: vicenteg.mapr_hive, when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_pig, when: classic_enabled or yarn_enabled and pig_enabled is defined and pig_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: hue
   roles:
     - { role: vicenteg.mapr_httpfs, when: httpfs_enabled is defined and httpfs_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_solr, when: solr_enabled }
+  environment: '{{proxy_env}}'
 
 - hosts: oozie
   roles:
     - { role: vicenteg.mapr_oozie, when: classic_enabled or yarn_enabled and oozie_enabled is defined and oozie_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: hue
   roles:
     - { role: vicenteg.mapr-hue, when: hue_enabled is defined and hue_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_drill, tags: [ "drill" ], when: drill_enabled is defined and drill_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: spark_master
   become: yes
   roles:
     - { role: vicenteg.mapr_spark_master, when: spark_enabled is defined and spark_enabled and yarn_enabled is defined and yarn_enabled == False }
+  environment: '{{proxy_env}}'
 
 - hosts: spark_slave
   become: yes
   roles:
     - { role: vicenteg.mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   become: yes
   roles:
     - { role: vicenteg.user_account, tags: [ "opentsdb" ], user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: opentsdb
   become: yes
   roles:
     - { role: vicenteg.mapr_maprlogin_service, tags: [ "opentsdb" ], mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
     - { role: vicenteg.mapr_opentsdb, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_tcollector, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: kafka
   roles:
     - { role: vicenteg.mapr-kafka, when: kafka_enabled is defined and kafka_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: edge
   roles:
@@ -299,15 +329,18 @@
       become: yes
       become_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
+  environment: '{{proxy_env}}'
 
 - hosts: hiveserver
   roles:
     - { role: vicenteg.mapr_hive_test, tags: [ "test" ], when: classic_enabled or yarn_enabled and hive_enabled is defined and hive_enabled == True }
+  environment: '{{proxy_env}}'
 
 - hosts: cluster
   roles:
     - { role: vicenteg.mapr_drill_test, tags: [ "test" ], when: drill_enabled is defined and drill_enabled == True }
     - { role: vicenteg.mapr_spark_test, tags: [ "test" ], when: spark_enabled is defined and spark_enabled and skip_tests == False }
+  environment: '{{proxy_env}}'
 
 - hosts: edge:cluster
   become: yes

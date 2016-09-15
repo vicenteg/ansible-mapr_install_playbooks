@@ -161,7 +161,7 @@ ec2_regions:
     zone: us-east-1a
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
-    cluster_node_type: m4.4xlarge
+    cluster_node_type: m4.2xlarge
     cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:

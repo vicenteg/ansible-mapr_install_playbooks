@@ -38,7 +38,7 @@ mirror_host: package.mapr.com
 
 # Choose the MapR version you want.
 # Be sure to include the 'v'.
-mapr_version: v5.1.0
+mapr_version: v5.2.0
 
 # Optionally provide a license key file here.
 license_file:
@@ -49,7 +49,7 @@ secure_cluster: True
 # disks to use on each node. The default below is for a d2.xlarge
 # instance, which provides no instance store volumes. Volumes are
 # specified below, with the region information.
-mapr_disks: [ "/dev/xvdf","/dev/xvdg" ]
+mapr_disks: [ "/dev/xvdf","/dev/xvdg","/dev/xvdh" ]
 
 # Default NTP servers are below. Uncomment and override these defaults
 # as needed, particularly if you don't have internet access.
@@ -161,7 +161,7 @@ ec2_regions:
     zone: us-east-1a
     keypair: vgonzalez_keypair
     # How many nodes to request per region.
-    cluster_node_type: m4.2xlarge
+    cluster_node_type: d2.xlarge
     cluster_node_count: 4
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
@@ -170,13 +170,11 @@ ec2_regions:
         delete_on_termination: True
         volume_size: 50
       - device_name: /dev/xvdf
-        delete_on_termination: True
-        volume_size: 500
-        volume_type: st1
+        ephemeral: ephemeral0
       - device_name: /dev/xvdg
-        delete_on_termination: True
-        volume_size: 500
-        volume_type: st1
+        ephemeral: ephemeral0
+      - device_name: /dev/xvdg
+        ephemeral: ephemeral0
     edge_node_type: m4.xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:

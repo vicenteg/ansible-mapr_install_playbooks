@@ -99,9 +99,45 @@
 
 
 - hosts: cluster
+  become: yes
+  become_user: root
   roles:
     - { role: vicenteg.mapr_hbasemaster, when: hbase_enabled }
     - { role: vicenteg.mapr_hbaseregionserver, when: hbase_enabled }
+  environment: '{{proxy_env}}'
+
+- hosts: elasticsearch
+  become: yes
+  become_user: root
+  tasks:
+    - name: install mapr-elasticsearch
+      yum: name=mapr-elasticsearch state=present
+      when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
+  environment: '{{proxy_env}}'
+
+- hosts: opentsdb
+  become: yes
+  become_user: root
+  tasks:
+    - name: install gnuplot
+      yum: name=gnuplot state=present
+
+    - name: install mapr-opentsdb
+      yum: name=mapr-opentsdb state=present
+      when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
+  environment: '{{proxy_env}}'
+
+- hosts: cluster
+  become: yes
+  become_user: root
+  tasks:
+    - name: install mapr-fluentd
+      yum: name=mapr-fluentd state=present
+      when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
+
+    - name: install mapr-collectd
+      yum: name=mapr-collectd state=present
+      when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
   environment: '{{proxy_env}}'
 
 - hosts: edge
@@ -241,6 +277,18 @@
     - { role: vicenteg.mapr_cluster_startup }
 
 - hosts: cluster
+  become: yes
+  become_user: root
+  tasks:
+    - name: obtain a MapR ticket for root using {{maprlogin_username}} (required to create opentsdb table)
+      shell: echo {{maprlogin_pw_clear}} | maprlogin password -user {{maprlogin_username}}
+      no_log: true
+      when: secure_cluster and opentsdb_enabled
+
+    - name: configure MapR Monitoring
+      command: /opt/mapr/server/configure.sh -R {% if opentsdb_enabled and groups['opentsdb']|length > 0 %}-OT {% for node in groups['opentsdb'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %} {% if elasticsearch_enabled and groups['elasticsearch']|length > 0 %} -ES {% for node in groups['elasticsearch'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %}
+
+- hosts: cluster
   tags: mapr-core
   roles:
     - { role: vicenteg.mapr_license, when: license_file is defined and license_file != '' }
@@ -279,10 +327,28 @@
     - { role: vicenteg.mapr-hue, when: hue_enabled is defined and hue_enabled == True }
   environment: '{{proxy_env}}'
 
-- hosts: cluster
+- hosts: drill
   roles:
     - { role: vicenteg.mapr_drill, tags: [ "drill" ], when: drill_enabled is defined and drill_enabled == True }
   environment: '{{proxy_env}}'
+
+- hosts: drill
+  tasks:
+    - name: log in to drillbit
+      command: curl -c .drillbit_cookies -k -f -X POST -d j_username={{mapr_admin_username|default("mapr")}} -d j_password={{maprlogin_clear_pw|default("mapr")}} https://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/j_security_check
+      run_once: true
+      when: hive_enabled and secure_cluster is defined and secure_cluster == True
+
+    - name: add hive storage plugin (SSL)
+      command: 'curl -b .drillbit_cookies -k -f -H "Content-Type: application/json" -X POST -d @/tmp/hive-storage-plugin.json https://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/storage/hive.json'
+      run_once: true
+      when: hive_enabled is defined and hive_enabled == True and secure_cluster is defined and secure_cluster == True
+
+    - name: add hive storage plugin (no SSL)
+      shell: 'curl -f -H "Content-Type: application/json" -X POST -d @/tmp/hive-storage-plugin.json http://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/storage/hive.json'
+      run_once: true
+      when: hive_enabled is defined and hive_enabled == True and (secure_cluster is not defined or secure_cluster == False)
+
 
 - hosts: spark_master
   become: yes
@@ -292,27 +358,41 @@
 
 - hosts: spark_slave
   become: yes
+  become_user: root
   roles:
     - { role: vicenteg.mapr_spark_slave, when: spark_enabled is defined and spark_enabled }
   environment: '{{proxy_env}}'
 
-- hosts: cluster
-  become: yes
-  roles:
-    - { role: vicenteg.user_account, tags: [ "opentsdb" ], user: opentsdb, uid: 2147483631, group: opentsdb, gid: 2147483631, home: /home/opentsdb, when: opentsdb_enabled is defined and opentsdb_enabled == True }
-  environment: '{{proxy_env}}'
+- hosts: spark_slave
+  tasks:
+    - name: create /apps volume for Spark
+      run_once: yes
+      become: yes
+      become_user: '{{mapr_admin_username}}'
+      mapr_volume: name=apps.spark path=/apps/spark state=present username={{mapr_admin_username}} password={{mapr_password_clear|default("mapr")}} mapr_webserver={{mapr_webserver}}
 
-- hosts: opentsdb
-  become: yes
-  roles:
-    - { role: vicenteg.mapr_maprlogin_service, tags: [ "opentsdb" ], mapr_admin_username: mapr, maprlogin_username: "{{opentsdb_user}}", when: "secure_cluster is defined and secure_cluster == True and opentsdb_enabled is defined and opentsdb_enabled == True" }
-    - { role: vicenteg.mapr_opentsdb, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
-  environment: '{{proxy_env}}'
+    - name: create a spark work directory
+      become: yes
+      become_user: root
+      file: dest=/opt/mapr/spark/tmp owner={{mapr_admin_username}} group={{mapr_admin_username}} state=directory mode=0750
 
-- hosts: cluster
-  roles:
-    - { role: vicenteg.mapr_tcollector, tags: [ "opentsdb" ], when: opentsdb_enabled is defined and opentsdb_enabled == True }
-  environment: '{{proxy_env}}'
+    - name: create a local volume for spark work directory
+      mapr_volume: 
+      args:
+        name: mapr.{{ansible_fqdn}}.local.spark
+        path: /var/mapr/local/{{ansible_fqdn}}/spark
+        createparent: true
+        replication: "1"
+        minreplication: "1"
+        localvolumehost: '{{ansible_fqdn}}'
+        mapr_webserver: '{{mapr_webserver}}'
+        state: present
+
+    - name: set spark work directory in spark configuration
+      become: yes
+      become_user: '{{mapr_admin_username}}'
+      lineinfile: dest=/opt/mapr/spark/spark-{{spark_version}}/conf/spark-env.sh state=present regexp="^export SPARK_WORKER_DIR" line="export SPARK_WORKER_DIR=/mapr/{{cluster_name}}/var/mapr/local/{{ansible_fqdn}}/spark"
+
 
 - hosts: kafka
   roles:

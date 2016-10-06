@@ -4,7 +4,7 @@ user=centos
 mount=/media/ephemeral0
 vault_password_file="vault_pass"
 
-OPTS=$(getopt --long skipvalidation --long verbose --long testonly --long skiptests -o "vt" -- "$@")
+OPTS=$(getopt --long validationonly --long skipvalidation --long verbose --long testonly --long skiptests -o "vt" -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 
 # Note the quotes around `$TEMP': they are essential!
@@ -22,12 +22,16 @@ while true ; do
 			SKIP_TAGS="$SKIP_TAGS,validation"
 			echo "skipping validation.";
 			shift ;;
+		--validationonly)
+			TAGS="validation"
+			echo "running validation.";
+			shift ;;
 		--skiptests)
 			SKIP_TAGS="$SKIP_TAGS,test"
 			echo "skipping tests.";
 			shift ;;
 		-t|--testonly)
-			TESTONLY="--tags test"
+			TAGS="$TAGS,test"
 			echo "Running test tags" ;
 			shift ;;
 		--) shift ; break ;;
@@ -57,7 +61,8 @@ time (
 		ansible-playbook $VERBOSE -i inventory.py -u $user opt_mapr.yml || exit 1
 	fi
 
+	ansible -i inventory.py -m setup --tree facts all
 	ansible-playbook $VERBOSE -i inventory.py -u $user wait.yml && \
-		ansible-playbook $TESTONLY $VERBOSE $SKIP_TAGS -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml && \
+		ansible-playbook ${TAGS:+--tags $TAGS} $VERBOSE $SKIP_TAGS -f 10 -i inventory.py -u $user $VAULT_PASS_OPT mapr_install.yml && \
 		./printurls.sh
 )

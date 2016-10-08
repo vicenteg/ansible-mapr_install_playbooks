@@ -370,11 +370,13 @@
       become: yes
       become_user: '{{mapr_admin_username}}'
       mapr_volume: name=apps.spark path=/apps/spark state=present username={{mapr_admin_username}} password={{mapr_password_clear|default("mapr")}} mapr_webserver={{mapr_webserver}}
+      when: spark_enabled is defined and spark_enabled
 
     - name: create a spark work directory
       become: yes
       become_user: root
       file: dest=/opt/mapr/spark/tmp owner={{mapr_admin_username}} group={{mapr_admin_username}} state=directory mode=0750
+      when: spark_enabled is defined and spark_enabled
 
     - name: create a local volume for spark work directory
       mapr_volume: 
@@ -387,11 +389,13 @@
         localvolumehost: '{{ansible_fqdn}}'
         mapr_webserver: '{{mapr_webserver}}'
         state: present
+      when: spark_enabled is defined and spark_enabled
 
     - name: set spark work directory in spark configuration
       become: yes
       become_user: '{{mapr_admin_username}}'
       lineinfile: dest=/opt/mapr/spark/spark-{{spark_version}}/conf/spark-env.sh state=present regexp="^export SPARK_WORKER_DIR" line="export SPARK_WORKER_DIR=/mapr/{{cluster_name}}/var/mapr/local/{{ansible_fqdn}}/spark"
+      when: spark_enabled is defined and spark_enabled
 
 
 - hosts: kafka

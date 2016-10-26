@@ -125,6 +125,10 @@
     - name: install mapr-opentsdb
       yum: name=mapr-opentsdb state=present
       when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
+
+    - name: install mapr-grafana
+      yum: name=mapr-grafana state=present
+      when: mapr_version|replace("v", "")|version_compare("5.2.0", ">=")
   environment: '{{proxy_env}}'
 
 - hosts: cluster
@@ -337,17 +341,17 @@
     - name: log in to drillbit
       command: curl -c .drillbit_cookies -k -f -X POST -d j_username={{mapr_admin_username|default("mapr")}} -d j_password={{maprlogin_clear_pw|default("mapr")}} https://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/j_security_check
       run_once: true
-      when: hive_enabled and secure_cluster is defined and secure_cluster == True
+      when: drill_enabled is defined and drill_enabled and hive_enabled and secure_cluster is defined and secure_cluster == True
 
     - name: add hive storage plugin (SSL)
       command: 'curl -b .drillbit_cookies -k -f -H "Content-Type: application/json" -X POST -d @/tmp/hive-storage-plugin.json https://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/storage/hive.json'
       run_once: true
-      when: hive_enabled is defined and hive_enabled == True and secure_cluster is defined and secure_cluster == True
+      when: drill_enabled is defined and drill_enabled and hive_enabled is defined and hive_enabled == True and secure_cluster is defined and secure_cluster == True
 
     - name: add hive storage plugin (no SSL)
       shell: 'curl -f -H "Content-Type: application/json" -X POST -d @/tmp/hive-storage-plugin.json http://{{hostvars[inventory_hostname].ansible_fqdn}}:8047/storage/hive.json'
       run_once: true
-      when: hive_enabled is defined and hive_enabled == True and (secure_cluster is not defined or secure_cluster == False)
+      when: drill_enabled is defined and drill_enabled and hive_enabled is defined and hive_enabled == True and (secure_cluster is not defined or secure_cluster == False)
 
 
 - hosts: spark_master
@@ -413,7 +417,36 @@
       become: yes
       become_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
-  environment: '{{proxy_env}}'
+
+    - name: test whether dhclient is running
+      command: pgrep -f dhclient
+      register: dhclient_running
+
+    - name: configure dhclient if node uses DHCP
+      become: yes
+      become_user: root
+      lineinfile: >
+        line="interface \"{{ansible_default_ipv4.interface}}\" { prepend domain-name-servers {% for h in groups['mesosmaster'] %}{{hostvars[h].ansible_default_ipv4.address}}{% if not loop.last %},{% endif %}{% endfor %}; }"
+        dest=/etc/dhcp/dhclient.conf
+        regexp='domain-name-servers'
+      when: dhclient_running.rc == 0
+
+    - name: configure resolv.conf if not using DHCP
+      become: yes
+      become_user: root
+      lineinfile: >
+        line="nameserver {{hostvars[item].ansible_default_ipv4.address}}"
+        #line="nameserver {{hostvars[groups['mesosmaster'][0]].ansible_default_ipv4.address}}"
+        dest=/etc/resolv.conf
+        insertafter="^search"
+      with_items: '{{groups.mesosmaster}}'
+      when: dhclient_running.rc != 0
+      environment: '{{proxy_env}}'
+
+    - name: restart network on edge node
+      become: yes
+      become_user: root
+      service: name=network state=restarted
 
 - hosts: hiveserver
   roles:

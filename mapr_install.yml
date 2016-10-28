@@ -250,6 +250,18 @@
       lineinfile: dest=/opt/mapr/conf/warden.conf regexp=service.command.mfs.heapsize.maxpercent line=service.command.mfs.heapsize.maxpercent=65 backup=yes
       when: ansible_memtotal_mb < 16384
 
+- hosts: cluster
+  tags: mapr-core
+  tasks:
+    - name: do not use disks for YARN if disk count is low
+      become: yes
+      become_user: root
+      hadoop_properties: file=/opt/mapr/hadoop/hadoop-{{hadoop_version.stdout}}/etc/hadoop/mapred-site.xml name=mapreduce.{{item}}.disk value=0
+      with_items:
+        - map
+        - reduce
+      when: mapr_disks|length < 4
+
 - hosts: cldb
   tags: mapr-core
   roles:
@@ -287,10 +299,11 @@
     - name: obtain a MapR ticket for root using {{maprlogin_username}} (required to create opentsdb table)
       shell: echo {{maprlogin_pw_clear}} | maprlogin password -user {{maprlogin_username}}
       no_log: true
-      when: secure_cluster and opentsdb_enabled
+      when: secure_cluster and opentsdb_enabled is defined and opentsdb_enabled
 
     - name: configure MapR Monitoring
-      command: /opt/mapr/server/configure.sh -R {% if opentsdb_enabled and groups['opentsdb']|length > 0 %}-OT {% for node in groups['opentsdb'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %} {% if elasticsearch_enabled and groups['elasticsearch']|length > 0 %} -ES {% for node in groups['elasticsearch'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %}
+      command: /opt/mapr/server/configure.sh -R {% if opentsdb_enabled and groups['opentsdb']|length > 0 %}-OT {% for node in groups['opentsdb'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %} {% if elasticsearch_enabled is defined and elasticsearch_enabled and groups['elasticsearch']|length > 0 %} -ES {% for node in groups['elasticsearch'] %}{{ hostvars[node].ansible_fqdn }}{% if not loop.last %},{% endif %}{% endfor %}{% endif %}
+      when: opentsdb_enabled is defined and opentsdb_enabled
 
 - hosts: cluster
   tags: mapr-core
@@ -418,6 +431,8 @@
       become_user: root
       service: name=mapr-posix-client-{{posix_client_edition|default("basic")}} state=restarted
 
+- hosts: all
+  tasks:
     - name: test whether dhclient is running
       command: pgrep -f dhclient
       register: dhclient_running
@@ -429,7 +444,7 @@
         line="interface \"{{ansible_default_ipv4.interface}}\" { prepend domain-name-servers {% for h in groups['mesosmaster'] %}{{hostvars[h].ansible_default_ipv4.address}}{% if not loop.last %},{% endif %}{% endfor %}; }"
         dest=/etc/dhcp/dhclient.conf
         regexp='domain-name-servers'
-      when: dhclient_running.rc == 0
+      when: dhclient_running.rc == 0 and myriad_enabled is defined and myriad_enabled
 
     - name: configure resolv.conf if not using DHCP
       become: yes
@@ -440,13 +455,14 @@
         dest=/etc/resolv.conf
         insertafter="^search"
       with_items: '{{groups.mesosmaster}}'
-      when: dhclient_running.rc != 0
+      when: dhclient_running.rc != 0 and myriad_enabled is defined and myriad_enabled
       environment: '{{proxy_env}}'
 
     - name: restart network on edge node
       become: yes
       become_user: root
       service: name=network state=restarted
+      when: myriad_enabled is defined and myriad_enabled
 
 - hosts: hiveserver
   roles:

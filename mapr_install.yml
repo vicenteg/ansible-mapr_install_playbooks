@@ -79,7 +79,7 @@
     - { role: vicenteg.mapr_posixclient, when: nfs_enabled is defined and nfs_enabled == False and posix_client_enabled is defined and posix_client_enabled == True }
   environment: '{{proxy_env}}'
 
-- hosts: mesosmaster
+- hosts: mesos-master
   become: yes
   become_user: root
   max_fail_percentage: 0
@@ -88,7 +88,7 @@
     - { role: vicenteg.mapr_mesos_dns, when: mesos_enabled is defined and mesos_enabled == True }
   environment: '{{proxy_env}}'
 
-- hosts: mesosslave
+- hosts: mesos-agent
   become: yes
   become_user: root
   max_fail_percentage: 0
@@ -310,7 +310,7 @@
   roles:
     - { role: vicenteg.mapr_license, when: license_file is defined and license_file != '' }
 
-- hosts: mesosmaster
+- hosts: mesos-master
   roles:
     - { role: vicenteg.mapr_myriad_startup, when: myriad_enabled }
 
@@ -441,7 +441,7 @@
       become: yes
       become_user: root
       lineinfile: >
-        line="interface \"{{ansible_default_ipv4.interface}}\" { prepend domain-name-servers {% for h in groups['mesosmaster'] %}{{hostvars[h].ansible_default_ipv4.address}}{% if not loop.last %},{% endif %}{% endfor %}; }"
+        line="interface \"{{ansible_default_ipv4.interface}}\" { prepend domain-name-servers {% for h in groups['mesos-master'] %}{{hostvars[h].ansible_default_ipv4.address}}{% if not loop.last %},{% endif %}{% endfor %}; }"
         dest=/etc/dhcp/dhclient.conf
         regexp='domain-name-servers'
       when: dhclient_running.rc == 0 and myriad_enabled is defined and myriad_enabled
@@ -451,10 +451,10 @@
       become_user: root
       lineinfile: >
         line="nameserver {{hostvars[item].ansible_default_ipv4.address}}"
-        #line="nameserver {{hostvars[groups['mesosmaster'][0]].ansible_default_ipv4.address}}"
+        #line="nameserver {{hostvars[groups['mesos-master'][0]].ansible_default_ipv4.address}}"
         dest=/etc/resolv.conf
         insertafter="^search"
-      with_items: '{{groups.mesosmaster}}'
+      with_items: '{{groups.mesos-master}}'
       when: dhclient_running.rc != 0 and myriad_enabled is defined and myriad_enabled
       environment: '{{proxy_env}}'
 

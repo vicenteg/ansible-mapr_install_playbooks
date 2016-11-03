@@ -166,22 +166,24 @@ ec2_regions:
     # If the node_price variables are set, ansible will request a spot instance.
     cluster_node_price:
     cluster_node_volumes:
-      - device_name: /dev/xvdb
-        delete_on_termination: True
+      - device_name: /dev/sda1
+        volume_type: gp2
         volume_size: 50
+        delete_on_termination: True
       - device_name: /dev/xvdf
         ephemeral: ephemeral0
       - device_name: /dev/xvdg
-        ephemeral: ephemeral0
+        ephemeral: ephemeral1
       - device_name: /dev/xvdg
-        ephemeral: ephemeral0
+        ephemeral: ephemeral2
     edge_node_type: m4.xlarge
     # If the node_price variables are set, ansible will request a spot instance.
     edge_node_price:
     edge_node_count: 0
     edge_node_volumes:
-      - device_name: /dev/xvdb
+      - device_name: /dev/sda1
         volume_size: 20
+        volume_type: gp2
         delete_on_termination: true
     # If the node_price variables are set, ansible will request a spot instance.
     spot_wait_timeout: 900

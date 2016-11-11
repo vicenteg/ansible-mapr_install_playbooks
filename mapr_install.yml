@@ -454,7 +454,7 @@
         #line="nameserver {{hostvars[groups['mesos-master'][0]].ansible_default_ipv4.address}}"
         dest=/etc/resolv.conf
         insertafter="^search"
-      with_items: '{{groups.mesos-master}}'
+      with_items: '{{groups["mesos-master"]}}'
       when: dhclient_running.rc != 0 and myriad_enabled is defined and myriad_enabled
       environment: '{{proxy_env}}'
 

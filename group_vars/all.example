@@ -174,7 +174,7 @@ ec2_regions:
         ephemeral: ephemeral0
       - device_name: /dev/xvdg
         ephemeral: ephemeral1
-      - device_name: /dev/xvdg
+      - device_name: /dev/xvdh
         ephemeral: ephemeral2
     edge_node_type: m4.xlarge
     # If the node_price variables are set, ansible will request a spot instance.
